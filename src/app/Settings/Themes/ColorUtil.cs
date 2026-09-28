@@ -13,6 +13,15 @@ namespace ContextShell.Settings.Themes
 			if(raw == null)
 				return false;
 			var s = raw.Trim();
+
+			// [#rrggbb, opacity] with opacity in percent, as the engine accepts.
+			var parts = NssTheme.SplitArray(s);
+			if(parts.Count == 2 && TryParse(parts[0], out var baseColor) && NssTheme.TryParseNumber(parts[1], out var percent))
+			{
+				color = WithOpacity(Color.FromRgb(baseColor.R, baseColor.G, baseColor.B), percent);
+				return true;
+			}
+
 			if(!s.StartsWith("#"))
 				return false;
 			s = s.Substring(1);

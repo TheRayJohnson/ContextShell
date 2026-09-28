@@ -22,8 +22,8 @@ theme
 			// top-to-bottom specular sheen
 			linear=[0, 0, 0, 100]
 			stop=[
-				[0, #ffffff, @if(sys.dark, 14, 45)],
-				[0.35, #ffffff, @if(sys.dark, 4, 12)],
+				[0, #ffffff, @if(sys.dark, 10, 40)],
+				[0.3, #ffffff, @if(sys.dark, 3, 10)],
 				[1, #ffffff, 0]
 			]
 		}
@@ -33,59 +33,47 @@ theme
 		enabled=true
 		size=1
 		// bright rim, like light catching the glass edge
-		color=@if(sys.dark, #ffffff, #ffffff)
-		opacity=@if(sys.dark, 22, 70)
+		color=#ffffff
+		opacity=@if(sys.dark, 18, 70)
 		radius=3
-		padding=[4, 4, 6, 6]
 	}
 	shadow
 	{
 		enabled=true
-		size=12
+		size=8
 		color=#000000
-		opacity=@if(sys.dark, 40, 18)
-		offset=4
+		opacity=@if(sys.dark, 35, 15)
+		offset=3
 	}
 	item
 	{
 		radius=3
-		opacity=@if(sys.dark, 18, 55)
-		padding=[8, 8, 4, 4]
-		margin=[4, 4, 0, 0]
 		text
 		{
 			normal=@if(sys.dark, #f5f5f7, #1d1d1f)
 			select=@if(sys.dark, #ffffff, #000000)
-			normal.disabled=@if(sys.dark, #8e8e93, #8e8e93)
-			select.disabled=@if(sys.dark, #8e8e93, #8e8e93)
+			normal.disabled=#8e8e93
+			select.disabled=#8e8e93
 		}
 		back
 		{
-			// glass "pill" behind the hovered item
-			select=@if(sys.dark, #ffffff, #ffffff)
-			select.disabled=@if(sys.dark, #3a3a3c, #e5e5ea)
-		}
-		border
-		{
-			select=@if(sys.dark, #ffffff, #ffffff)
+			// Rows are clear so the glass shows through; only the hovered row gets a soft pill.
+			normal=[#000000, 0]
+			normal.disabled=[#000000, 0]
+			select=@if(sys.dark, [#ffffff, 12], [#000000, 7])
+			select.disabled=@if(sys.dark, [#ffffff, 5], [#000000, 3])
 		}
 	}
 	separator
 	{
-		size=1
 		color=@if(sys.dark, #ffffff, #000000)
-		opacity=@if(sys.dark, 14, 10)
-		margin=[10, 10, 4, 4]
+		opacity=@if(sys.dark, 12, 9)
 	}
 	symbol
 	{
 		normal=@if(sys.dark, #f5f5f7, #1d1d1f)
 		select=@if(sys.dark, #ffffff, #000000)
 	}
-	font
-	{
-		name="Segoe UI"
-		size=13
-	}
+	font.name="Segoe UI"
 	image.align=2
 }
