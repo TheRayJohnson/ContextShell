@@ -26,13 +26,33 @@ namespace ContextShell.Settings.Pages
 
 		private readonly MainWindow _main;
 		private bool _dark = ThemeManager.IsDark;
+		private bool _userPicked, _syncing;
 
 		public AppearancePage(MainWindow main)
 		{
 			_main = main;
 			InitializeComponent();
-			(_dark ? PreviewDark : PreviewLight).IsChecked = true;
+			SyncMode();
 			Refresh();
+
+			// Previews follow the Windows mode until the user picks one.
+			EventHandler onTheme = (s, e) =>
+			{
+				if(_userPicked)
+					return;
+				_dark = ThemeManager.IsDark;
+				SyncMode();
+				Refresh();
+			};
+			Loaded += (s, e) => ThemeManager.Changed += onTheme;
+			Unloaded += (s, e) => ThemeManager.Changed -= onTheme;
+		}
+
+		private void SyncMode()
+		{
+			_syncing = true;
+			(_dark ? PreviewDark : PreviewLight).IsChecked = true;
+			_syncing = false;
 		}
 
 		public static string DisplayName(string name) =>
@@ -42,7 +62,9 @@ namespace ContextShell.Settings.Pages
 		private void Mode_Checked(object sender, RoutedEventArgs e)
 		{
 			_dark = PreviewDark.IsChecked == true;
-			if(IsLoaded)
+			if(!_syncing)
+				_userPicked = true;
+			if(IsLoaded && !_syncing)
 				Refresh();
 		}
 

@@ -44,7 +44,23 @@ namespace ContextShell.Settings.Pages
 
 			SizeChanged += (s, e) => PreviewColumn.Width = new GridLength(e.NewSize.Width < 900 ? 280 : 340);
 			UpdatePreview();
+
+			// The preview follows the Windows mode until the user picks Light or Dark.
+			EventHandler onTheme = (s, e) =>
+			{
+				if(_userPicked)
+					return;
+				_dark = ThemeManager.IsDark;
+				_syncing = true;
+				(_dark ? PreviewDark : PreviewLight).IsChecked = true;
+				_syncing = false;
+				UpdatePreview();
+			};
+			Loaded += (s, e) => ThemeManager.Changed += onTheme;
+			Unloaded += (s, e) => ThemeManager.Changed -= onTheme;
 		}
+
+		private bool _userPicked, _syncing;
 
 		private UIElement GroupCard(ThemeGroup group, FieldEditor editor)
 		{
@@ -67,6 +83,8 @@ namespace ContextShell.Settings.Pages
 		private void Mode_Checked(object sender, RoutedEventArgs e)
 		{
 			_dark = PreviewDark.IsChecked == true;
+			if(IsLoaded && !_syncing)
+				_userPicked = true;
 			if(IsInitialized)
 				UpdatePreview();
 		}
