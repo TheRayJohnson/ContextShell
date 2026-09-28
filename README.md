@@ -1,75 +1,83 @@
-[![Ceasefire Now](https://badge.techforpalestine.org/default)](https://techforpalestine.org/learn-more)
+[![Build](https://github.com/TheRayJohnson/ContextShell/actions/workflows/build.yml/badge.svg)](https://github.com/TheRayJohnson/ContextShell/actions/workflows/build.yml)
 
-[![Build](../../actions/workflows/build.yml/badge.svg)](../../actions/workflows/build.yml)
-[![Nightly](https://img.shields.io/badge/Nightly-nightly.link-purple)](https://nightly.link/moudey/Shell/workflows/build/main)
+# ContextShell
 
-# [Shell](https://nilesoft.org)
-Powerful manager for Windows File Explorer context menu.
-<br>
+A context menu manager for Windows 10 and 11 File Explorer. Free, open source, MIT licensed.
 
-<p align="center">
- <img src="https://www.nilesoft.org/images/logo-256.png">
- <br>
- <br>
-</p>
+ContextShell is a fork of [Nilesoft Shell](https://github.com/moudey/Shell). It keeps the Shell engine and its `.nss`
+config language. It ships without a launcher, plugin marketplace, auto-updater, or telemetry. You configure it in plain text files.
 
-## Details
-<p>
-Shell is a context menu extender that lets you handpick the items to integrate into the Windows File Explorer context menu, create custom commands to access all your favorite web pages, files, and folders, and launch any application directly from the context menu.<br>
-It also provides you a convenient solution to modify or remove any context menu item added by the system or third-party software.
-</p>
-
-Features
-------------------
-* Lightweight, portable, and relatively easy to use.
-* Fully customize the appearance.
-* Adding new custom items such as (sub-menu, menu-items, and separator).
-* Modify or remove items that already exist.
-* Support all file system objects, including files, folders, desktop, and the taskbar.
-* Support expressions syntax. with built-in functions and predefined variables.
-* Support colors, glyphs, SVG, embedded icons, and image files such as .ico, .png or .bmp.
-* Support search and filter.
-* Support for complex nested menus.
-* Support multiple columns.
-* Quickly and easily configure file in plain text.
-* Minimal resource usage.
-* No limitations.
-
-
-Requirements
-------------------
-  * Microsoft Windows 7/8/10/11 
-
-
-Documentation
-------------------
-Browse the [online documentation here.](https://nilesoft.org/docs)
-
-[<img src="https://devin.ai/assets/deepwiki-badge.png" alt="Ask DeepWiki.com" height="20"/>](https://deepwiki.com/moudey/Shell)
-
-Download
-------------------
-Download the latest version:  
-https://nilesoft.org/download
-
-Screenshots
-------------------
 <p align="center">
 <img src="/screenshots/folder-back.png"><img src="/screenshots/file-manage.png"><br>
-<img src="/screenshots/view.png"><img src="/screenshots/edit.png"><br>
 <img src="/screenshots/terminal.png"><img src="/screenshots/taskbar.png"><br>
-<img src="/screenshots/goto2.png"><img src="/screenshots/gradient.png"><br>
-<img src="/screenshots/acrylic.png"><br>
-
-<br>
-<br>
 </p>
 
-Donate
-------------------
-If you really love Shell and would like to see it continue to improve.
+## Features
 
-[![Paypal](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://www.paypal.me/nilesoft)
-[![BuyMeACoffee](https://img.shields.io/badge/Donate-BuyMeACoffee-yellow.svg)](https://www.buymeacoffee.com/moudey)
+* Lightweight and portable. Two binaries (`shell.dll`, `shell.exe`) and plain-text config.
+* Fully customizable appearance: themes, colors, fonts, borders, shadows, acrylic/transparency.
+* Add custom items: sub-menus, menu items, separators, multi-column menus.
+* Modify, move, or remove existing items added by Windows or by third-party software.
+* Works on files, folders, drives, desktop, the navigation pane (Quick Access, This PC), and the taskbar.
+* Expression syntax with built-in functions and predefined variables (`sel.path`, `key.shift()`, `window.is_desktop`, …).
+* Icons from glyphs, SVG, embedded resources, `.ico`, `.png` and `.bmp`.
+* Replaces the Windows 11 compact menu with the full classic menu, so you don't need to click "Show more options".
 
+## Requirements
 
+* Windows 10 or Windows 11 (x64, x86 or ARM64)
+
+## Install
+
+> **Uninstall other Shell-based menus first.** Nilesoft Shell, iMA Menu, and ContextShell hook the same Explorer menu.
+> Only one of them can be active at a time.
+
+1. Download `ContextShell-<version>-x64.msi` (or the portable zip) from [Releases](https://github.com/TheRayJohnson/ContextShell/releases).
+2. Run the installer. It registers the extension and restarts Explorer.
+
+Portable / manual install from the zip, in an elevated terminal:
+
+```powershell
+.\shell.exe -register -treat -restart
+```
+
+To uninstall manually:
+
+```powershell
+.\shell.exe -unregister -restart
+```
+
+## Configure
+
+Edit `shell.nss` in the install folder (default `C:\Program Files\ContextShell`). It imports the files in `imports\`.
+Changes apply the next time you open a menu. Hold `Shift` and right-click the taskbar for quick links to the config and folder.
+
+Example: an "Open in new window" item for every folder, including Quick Access pins:
+
+```nss
+item(type='dir' title='Open in new window' image= cmd='explorer.exe' args='"@sel.path"')
+```
+
+Config syntax docs: [docs/](docs/). Syntax is compatible with Nilesoft Shell, so its
+[online docs](https://nilesoft.org/docs) apply too.
+
+## Build
+
+Visual Studio 2022 with the "Desktop development with C++" workload, plus the WiX v4 toolset for the installer.
+
+```powershell
+git clone --recurse-submodules https://github.com/TheRayJohnson/ContextShell
+nuget restore src/Shell.sln
+msbuild /m /p:Configuration=release /p:Platform=x64 src/Shell.sln
+```
+
+Output goes to `src/bin`. Every push to `main` builds x64, x86 and ARM64 on GitHub Actions.
+Pushing a `v*` tag publishes a release with zips and MSIs.
+
+## Credits and license
+
+MIT License. See [LICENSE](LICENSE).
+
+Based on [Nilesoft Shell](https://github.com/moudey/Shell) by Nilesoft Ltd. (MIT).
+Uses [plutovg](https://github.com/sammycage/plutovg), [plutosvg](https://github.com/sammycage/plutosvg), and
+[Microsoft Detours](https://github.com/microsoft/Detours).

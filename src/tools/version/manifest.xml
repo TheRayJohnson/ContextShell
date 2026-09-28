@@ -3,7 +3,7 @@
 	<assemblyIdentity
 		version="$VERSION$"
 		processorArchitecture="*"
-		name="Nilesoft.Shell"
+		name="TheRayJohnson.ContextShell"
 		type="win32"
 	/>
 	<description>Nilesoft Shell</description>

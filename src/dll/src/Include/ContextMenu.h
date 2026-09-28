@@ -3,7 +3,7 @@
 //constexpr auto WC_MENU_Layer = L"Nilesoft.Shell.Window.Layers";
 //constexpr auto WC_MENU_Layers = L"Nilesoft.Shell.Window.Border";
 //constexpr auto WC_MENU_Layers = L"Nilesoft.Shell.Window.Shadow";
-constexpr auto WC_Shell_Window = L"Nilesoft.Shell.Window";
+constexpr auto WC_Shell_Window = L"ContextShell.Window";
 constexpr auto def_COMSPEC = L"ComSpec";
 constexpr auto def_EXPLORER = L"explorer.exe";
 constexpr auto def_POWERSHELL = L"powershell.exe";

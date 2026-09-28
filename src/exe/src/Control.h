@@ -6,7 +6,7 @@ namespace Nilesoft
 {
 	namespace UI
 	{
-		constexpr auto WC_Window = L"Nilesoft.Shell.Window";
+		constexpr auto WC_Window = L"ContextShell.Window";
 
 		class Control
 		{

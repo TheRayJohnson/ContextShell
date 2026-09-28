@@ -1,11 +1,11 @@
 ﻿
 <?include var.wxi ?>
 
-<?define UpgradeCode = '{7BCA6512-254B-456F-8F08-AAD7508BEE00}' ?>
+<?define UpgradeCode = '{6FA65DF1-68C1-476C-A3CF-C09ED150D1C7}' ?>
 <?define Platform = '$(sys.BUILDARCH)' ?>
-<?define Name = 'Shell' ?>
-<?define Manufacturer = 'Nilesoft' ?>
-<?define FullName = '$(var.Manufacturer) $(var.Name)' ?>
+<?define Name = 'ContextShell' ?>
+<?define Manufacturer = 'TheRayJohnson' ?>
+<?define FullName = '$(var.Name)' ?>
 <?define Info = 'Powerful context menu manager for Windows File Explorer' ?>
 <?define bin = '..\..\bin' ?>
 <?define PlatformProgramFilesFolder = 'ProgramFiles6432Folder' ?>
@@ -53,8 +53,8 @@
 		<Property Id='MSIRESTARTMANAGERCONTROL' Value='Disable' />
 		<Property Id='DefaultUIFont' Value='WixUI_Font_Normal' />
 		<Property Id='ErrorDialog' Value='ErrorDlg' />
-		<Property Id='ARPURLINFOABOUT' Value='https://nilesoft.org/' />
-		<Property Id='ARPHELPLINK' Value='https://nilesoft.org/docs/' />
+		<Property Id='ARPURLINFOABOUT' Value='https://github.com/TheRayJohnson/ContextShell' />
+		<Property Id='ARPHELPLINK' Value='https://github.com/TheRayJohnson/ContextShell/tree/main/docs' />
 		<Property Id='ARPNOMODIFY' Value='1' Secure='yes' />
 		<Property Id='ARPNOREPAIR' Value='1' Secure='yes' />
 		<Property Id='BURNMSIMODIFY' Value='0' Secure='yes' />
@@ -64,7 +64,7 @@
 		<StandardDirectory Id='$(var.PlatformProgramFilesFolder)'>
 			<Directory Id='INSTALLFOLDER' Name='$(var.FullName)'>
 				<Directory Id='IMPORTS' Name='imports'>
-					<Component Id='IMPORTS' Guid='{FF987BEA-6195-4C05-8523-00936A1BD0E2}' NeverOverwrite='yes'>
+					<Component Id='IMPORTS' Guid='{1907F318-D55A-48BA-AC47-5FDC3CF559A5}' NeverOverwrite='yes'>
 						<File Id='theme.nss' Source='$(var.bin)\imports\theme.nss' />
 						<File Id='goto.nss' KeyPath='yes' Source='$(var.bin)\imports\goto.nss' />
 						<File Id='modify.nss' Source='$(var.bin)\imports\modify.nss' />
@@ -75,7 +75,7 @@
 						<File Id='terminal.nss' Source='$(var.bin)\imports\terminal.nss' />
 					</Component>
 				<Directory Id='LANG' Name='lang'>
-					<Component Id='LANG' Guid='{FF987BEA-6195-4C05-8523-00936A1BD092}' NeverOverwrite='yes'>
+					<Component Id='LANG' Guid='{BBE59710-FA39-47B8-8A20-866171A0D262}' NeverOverwrite='yes'>
 						<File Id='en.nss' Source='$(var.bin)\imports\lang\en.nss' />
 						<File Id='ar.nss' Source='$(var.bin)\imports\lang\ar.nss' />
 						<File Id='de_DE.nss' Source='$(var.bin)\imports\lang\de-DE.nss' />
@@ -86,31 +86,31 @@
 					</Component>
 				</Directory>
 				</Directory>
-					<Component Id='APPLICATION' Guid='{ED9EFE4B-E83D-42BB-8938-F72B13A2FAD2}'>
+					<Component Id='APPLICATION' Guid='{41192606-7671-4829-8822-3DE09D6D61C8}'>
 					<CreateFolder Directory='INSTALLFOLDER' />
 					<File Id='shell.exe' Checksum='yes' Name='shell.exe' KeyPath='yes' Source='$(var.bin)\shell.exe' />
 					<File Id='shell.dll' Checksum='yes' Name='shell.dll' Source='$(var.bin)\shell.dll' />
 					<File Id='readme.txt' Name='readme.txt' Source='$(var.bin)\readme.txt' />
 					<File Id='license.txt' Name='LICENSE' Source='$(var.bin)\license.txt' />
 				</Component>
-				<Component Id='CONFIG' Guid='{BEC55C6A-30C7-4E1F-B64D-8636AB379E31}' NeverOverwrite='yes'>
+				<Component Id='CONFIG' Guid='{3B407066-F28F-4AEE-B38B-D35CE6A15834}' NeverOverwrite='yes'>
 					<File Id='shell.nss' Name='shell.nss' KeyPath='yes' Source='$(var.bin)\shell.nss' />
 				</Component>
-				<Component Id='CLEANUP' Guid='{838501CD-485B-4587-9195-6CFB416202B9}' KeyPath='yes'>
+				<Component Id='CLEANUP' Guid='{481C2213-9D58-4E0A-9D8C-3EFA12CA6BB8}' KeyPath='yes'>
 					<RemoveFile Id='PurgeAppFiles' Name='*.*' On='uninstall' Directory='INSTALLFOLDER' />
 					<RemoveFolder Id='PurgeAppFolder' On='uninstall' Directory='INSTALLFOLDER' />
 				</Component>
-				<Component Id='DisplayIcon' Guid='{69292D86-8518-4C68-867C-192767154C54}'>
+				<Component Id='DisplayIcon' Guid='{8D05B1EA-818A-4DB9-9C69-FC70F2522A24}'>
 					<RegistryValue Id='DisplayIcon' Key='SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\[ProductCode]'
 						Name='DisplayIcon' Root='HKLM' Type='string' Value='[!shell.exe]' KeyPath='yes'/>
 				</Component>
 			</Directory>
 		</StandardDirectory>
 		<StandardDirectory Id='ProgramMenuFolder'>
-			<Component Id='StartMenuShortcut' Guid='{41AFAF39-4B3F-4D1E-800E-DD3231C004C9}'>
+			<Component Id='StartMenuShortcut' Guid='{79A7E4EC-8438-4378-B380-59313E253F15}'>
 				<Shortcut Id='StartMenuShortcut' Directory='ProgramMenuFolder' Description='$(var.Info)'
 					WorkingDirectory='INSTALLFOLDER' Name='$(var.FullName)' Target='[!shell.exe]' />
-				<RegistryValue Key='Software\Nilesoft\Shell' Root='HKCU' Type='string' Value='' KeyPath='yes' />
+				<RegistryValue Key='Software\TheRayJohnson\ContextShell' Root='HKCU' Type='string' Value='' KeyPath='yes' />
 			</Component>
 		</StandardDirectory>
 <!--
@@ -159,4 +159,4 @@
 
 		<?include ui.wxi ?>
 	</Package>
-</Wix>
+</Wix>

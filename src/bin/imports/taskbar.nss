@@ -4,8 +4,8 @@
 	item(title="manager" image=\uE0F3 admin cmd='"@app.exe"')
 	item(title="directory" image=\uE0E8 cmd='"@app.dir"')
 	item(title="version\t"+@app.ver vis=label col=1)
-	item(title="docs" image=\uE1C4 cmd='https://nilesoft.org/docs')
-	item(title="donate" image=\uE1A7 cmd='https://nilesoft.org/donate')
+	item(title="docs" image=\uE1C4 cmd='https://github.com/TheRayJohnson/ContextShell/tree/main/docs')
+	item(title="issues" image=\uE1A7 cmd='https://github.com/TheRayJohnson/ContextShell/issues')
 }
 menu(where=@(this.count == 0) type="taskbar" image=icon.settings expanded=true)
 {

@@ -223,7 +223,7 @@ static bool InstallFolder(MSIHANDLE hInstall, std::wstring& install_folder, bool
 		{
 			install_folder.resize(MAX_PATH);
 			auto rc = ::RegGetValueW(HKEY_CLASSES_ROOT,
-									 L"CLSID\\{BAE3934B-8A6A-4BFB-81BD-3FC599A1BAF1}\\InprocServer32",
+									 L"CLSID\\{3F580C96-2A74-458D-8FBB-80DAC41FC5D1}\\InprocServer32",
 									 nullptr, RRF_RT_REG_SZ | KEY_WOW64_64KEY, nullptr, static_cast<void *>(install_folder.data()), &length);
 			if(rc == ERROR_SUCCESS)
 			{

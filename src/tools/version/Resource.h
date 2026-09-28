@@ -24,11 +24,11 @@ namespace Nilesoft
 //#define APP_IS_CANARY			1
 //#define APP_CANARY				L"Canary"
 
-#define APP_COMPANY				L"Nilesoft"
+#define APP_COMPANY				L"TheRayJohnson"
 #define APP_COMPANYLTD			APP_COMPANY L" Ltd"
-#define APP_NAMEA				"Shell"
-#define APP_NAME				L"Shell"
-#define APP_FULLNAME			APP_COMPANY L" " APP_NAME
+#define APP_NAMEA				"ContextShell"
+#define APP_NAME				L"ContextShell"
+#define APP_FULLNAME			APP_NAME
 //#define APP_FULLNAME_VERSION	APP_FULLNAME L" (debug)"
 #define APP_FILENAME_TITLE		L"shell"
 
@@ -36,9 +36,9 @@ namespace Nilesoft
 #define	APP_VERSION				L"$MAJOR$.$MINOR$.$BUILD$"
 //#define APP_VERSION_FULL		L"$MAJOR$.$MINOR$ build $BUILD$"
 
-constexpr auto APP_EMAIL		= L"support@nilesoft.org";
-constexpr auto APP_WEBSITE		= L"www.nilesoft.org";
-constexpr auto APP_WEBSITELINK	= L"https://nilesoft.org";
+constexpr auto APP_EMAIL		= L"https://github.com/TheRayJohnson/ContextShell/issues";
+constexpr auto APP_WEBSITE		= L"https://github.com/TheRayJohnson/ContextShell";
+constexpr auto APP_WEBSITELINK	= L"https://github.com/TheRayJohnson/ContextShell";
 
 #ifdef _WINDLL
 	#define APP_FILENAME		APP_FILENAME_TITLE L".dll"

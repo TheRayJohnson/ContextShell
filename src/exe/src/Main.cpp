@@ -481,7 +481,7 @@ public:
 void check()
 {
 	Console c;
-	c.writel(L"\n\nNilesoft Shell\n");
+	c.writel(L"\n\n" APP_FULLNAME L"\n");
 
 	_log->info(L"BEGIN CHECK");
 
@@ -494,7 +494,7 @@ void check()
 
 	auto clsid_shex = [=](const string &s)->string
 	{
-		return (s + L"\\shellex\\ContextMenuHandlers\\nilesoft.shell").move();
+		return (s + HKCR_CONTEXTMENUHANDLERS).move();
 	};
 
 	auto exists_key = [=](HKEY k, const string &name)
