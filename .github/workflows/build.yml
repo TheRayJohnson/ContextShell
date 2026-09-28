@@ -25,7 +25,8 @@ jobs:
       BUILD_CONFIGURATION: ${{matrix.configuration}}
       BUILD_PLATFORM: ${{matrix.platform}}
       BIN_PATH: ${{github.workspace}}\src\bin
-    runs-on: windows-latest
+    # windows-latest ships VS 2026 without v143 ARM64 tools; the projects target v143.
+    runs-on: windows-2022
 
     steps:
     - uses: actions/checkout@v4
