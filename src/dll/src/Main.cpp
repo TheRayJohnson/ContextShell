@@ -557,10 +557,15 @@ BOOL WINAPI NtUserTrackPopupMenu(HMENU hMenu, uint32_t uFlags, int x, int y, HWN
 
 			if(!_initializer.Status.Disabled)
 			{
+				// Reload when shell.nss or a file it imports changed since the config was loaded.
+				if(_initializer.Status.Loaded && _initializer.config_has_changed())
+					_initializer.uninit();
+
 				// is injected from explorer
 				if(!_initializer.Status.Loaded)
 				{
-					if(_initializer.has_error() || has_inited)
+					// After a config error, retry once the files change instead of waiting for Ctrl+right-click.
+					if(_initializer.has_error(true) || has_inited)
 						__leave; //goto skip;
 					_initializer.init();
 				}

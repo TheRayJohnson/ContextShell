@@ -593,7 +593,8 @@ namespace Nilesoft
 		class Initializer
 		{
 		private:
-			uintptr_t _last_write_time{};
+			// Newest write time of shell.nss and the .nss files under imports\ when the config was loaded.
+			uint64_t _last_write_time{};
 
 		public:
 			struct {

@@ -93,6 +93,9 @@ namespace Nilesoft
 
 					load_mui();
 
+					// Remember the config's timestamp so later edits trigger a reload.
+					config_has_changed();
+
 					cache->Packages.load();
 
 					if(!parser.Load())
@@ -193,26 +196,62 @@ namespace Nilesoft
 			return false;
 		}
 
-		//determine config file changed
+		static uint64_t to_uint64(const FILETIME &ft)
+		{
+			return (static_cast<uint64_t>(ft.dwHighDateTime) << 32) | ft.dwLowDateTime;
+		}
+
+		// Newest write time of the .nss files (and folders, which change when files are added or
+		// removed) under dir, up to depth levels deep.
+		static void newest_config_time(const std::wstring &dir, int depth, uint64_t &newest)
+		{
+			WIN32_FIND_DATAW fd{};
+			auto h = ::FindFirstFileW((dir + L"\\*").c_str(), &fd);
+			if(h == INVALID_HANDLE_VALUE)
+				return;
+			do
+			{
+				if(fd.cFileName[0] == L'.' && (fd.cFileName[1] == 0 || (fd.cFileName[1] == L'.' && fd.cFileName[2] == 0)))
+					continue;
+				auto t = to_uint64(fd.ftLastWriteTime);
+				if(fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+				{
+					if(t > newest)
+						newest = t;
+					if(depth > 0)
+						newest_config_time(dir + L"\\" + fd.cFileName, depth - 1, newest);
+				}
+				else
+				{
+					auto len = ::wcslen(fd.cFileName);
+					if(len > 4 && ::_wcsicmp(fd.cFileName + len - 4, L".nss") == 0 && t > newest)
+						newest = t;
+				}
+			} while(::FindNextFileW(h, &fd));
+			::FindClose(h);
+		}
+
+		// Determine whether the config changed since the last call. Covers shell.nss and every .nss
+		// file under imports\, so edits to imported files (themes, ContextShell Settings) are seen too.
 		bool Initializer::config_has_changed()
 		{
 			bool res = false;
 			try
 			{
-				auto_handle hConfig = ::CreateFileW(application.Config, GENERIC_READ, FILE_SHARE_READ,
-													nullptr, OPEN_EXISTING, 0, nullptr);
-				if(hConfig)
+				uint64_t newest = 0;
+				WIN32_FIND_DATAW fd{};
+				auto h = ::FindFirstFileW(application.Config.c_str(), &fd);
+				if(h != INVALID_HANDLE_VALUE)
 				{
-					FILETIME ft_lastWriteTime{};
-					auto last_write_time = reinterpret_cast<uintptr_t *>(&ft_lastWriteTime);
-					if(::GetFileTime(hConfig, nullptr, nullptr, &ft_lastWriteTime) && *last_write_time != 0)
-					{
-						if(*last_write_time != _last_write_time)
-						{
-							res = _last_write_time > 0;
-							_last_write_time = *last_write_time;
-						}
-					}
+					newest = to_uint64(fd.ftLastWriteTime);
+					::FindClose(h);
+				}
+				newest_config_time(std::wstring(application.Dirctory.c_str()) + L"\\imports", 3, newest);
+
+				if(newest != 0 && newest != _last_write_time)
+				{
+					res = _last_write_time > 0;
+					_last_write_time = newest;
 				}
 			}
 			catch(...)
