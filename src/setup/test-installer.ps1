@@ -40,7 +40,13 @@ function Check([bool]$condition, [string]$what) {
 
 function Run([string]$exe, [string]$arguments, [int[]]$expected = @(0, 3010), [string]$log) {
 	Write-Host "> $([IO.Path]::GetFileName($exe)) $arguments" -ForegroundColor Cyan
-	$p = Start-Process $exe -ArgumentList $arguments -Wait -PassThru
+	$p = Start-Process $exe -ArgumentList $arguments -PassThru
+	# Anything waiting on a hidden prompt would hang CI; fail with the log instead.
+	if(-not $p.WaitForExit(300000)) {
+		$p | Stop-Process -Force
+		if($log -and (Test-Path $log)) { Get-Content $log -Tail 80 }
+		throw "$exe $arguments timed out after 5 minutes"
+	}
 	if($p.ExitCode -notin $expected) {
 		if($log -and (Test-Path $log)) { Get-Content $log -Tail 80 }
 		throw "$exe $arguments exited with $($p.ExitCode)"

@@ -55,10 +55,14 @@ namespace ContextShell.Setup
 		private double _reported;
 		private string _status = "";
 
-		public int Run(MsiOperation op, string packageOrProduct, string properties)
+		/// <param name="package">Path of the extracted MSI (install, upgrade, repair).</param>
+		/// <param name="productCode">Installed product code (repair, uninstall).</param>
+		public int Run(MsiOperation op, string package, string productCode, string properties)
 		{
+			// No Windows Installer UI at all. In particular no "locate the package" prompt, which
+			// would be invisible and hang: repairs always get the package from us instead.
 			IntPtr none = IntPtr.Zero;
-			MsiSetInternalUI(INSTALLUILEVEL_NONE | INSTALLUILEVEL_SOURCERESONLY, ref none);
+			MsiSetInternalUI(INSTALLUILEVEL_NONE, ref none);
 
 			if(!string.IsNullOrEmpty(LogPath))
 				MsiEnableLog(INSTALLLOGMODE_VERBOSE_ALL, LogPath, 0);
@@ -72,12 +76,17 @@ namespace ContextShell.Setup
 				{
 					case MsiOperation.Install:
 					case MsiOperation.Upgrade:
-						return MsiInstallProduct(packageOrProduct, properties ?? "");
+						return MsiInstallProduct(package, properties ?? "");
 					case MsiOperation.Repair:
-						return MsiConfigureProductEx(packageOrProduct, INSTALLLEVEL_DEFAULT, INSTALLSTATE_DEFAULT,
-							("REINSTALL=ALL REINSTALLMODE=omus " + properties).Trim());
+						// Windows caches the MSI without its embedded files, so a repair needs the
+						// original package. Same build: reinstall from it ("v" re-caches it).
+						// Same version, different build (different ProductCode): install over it,
+						// which the MSI's upgrade rules turn into a clean replacement.
+						if(string.Equals(PackageProductCode(package), productCode, StringComparison.OrdinalIgnoreCase))
+							return MsiInstallProduct(package, ("REINSTALL=ALL REINSTALLMODE=vomus " + properties).Trim());
+						return MsiInstallProduct(package, properties ?? "");
 					case MsiOperation.Uninstall:
-						return MsiConfigureProductEx(packageOrProduct, INSTALLLEVEL_DEFAULT, INSTALLSTATE_ABSENT, properties ?? "");
+						return MsiConfigureProductEx(productCode, INSTALLLEVEL_DEFAULT, INSTALLSTATE_ABSENT, properties ?? "");
 				}
 				return ERROR_INSTALL_FAILURE;
 			}
@@ -287,7 +296,6 @@ namespace ContextShell.Setup
 		private delegate int InstallUIHandlerRecord(IntPtr context, uint messageType, uint record);
 
 		private const int INSTALLUILEVEL_NONE = 2;
-		private const int INSTALLUILEVEL_SOURCERESONLY = 0x100;
 		private const int INSTALLLEVEL_DEFAULT = 0;
 		private const int INSTALLSTATE_ABSENT = 2;
 		private const int INSTALLSTATE_DEFAULT = 5;
@@ -341,6 +349,42 @@ namespace ContextShell.Setup
 
 		[DllImport("msi.dll", CharSet = CharSet.Unicode)]
 		private static extern int MsiFormatRecord(uint install, uint record, StringBuilder result, ref uint len);
+
+		/// <summary>ProductCode stored in an MSI's Property table.</summary>
+		public static string PackageProductCode(string msiPath)
+		{
+			uint db = 0, view = 0, rec = 0;
+			try
+			{
+				if(MsiOpenDatabase(msiPath, IntPtr.Zero, out db) != 0)
+					return null;
+				if(MsiDatabaseOpenView(db, "SELECT `Value` FROM `Property` WHERE `Property`='ProductCode'", out view) != 0
+				   || MsiViewExecute(view, 0) != 0 || MsiViewFetch(view, out rec) != 0)
+					return null;
+				return GetString(rec, 1);
+			}
+			finally
+			{
+				if(rec != 0) MsiCloseHandle(rec);
+				if(view != 0) MsiCloseHandle(view);
+				if(db != 0) MsiCloseHandle(db);
+			}
+		}
+
+		[DllImport("msi.dll", CharSet = CharSet.Unicode)]
+		private static extern int MsiOpenDatabase(string path, IntPtr persist, out uint handle);
+
+		[DllImport("msi.dll", CharSet = CharSet.Unicode)]
+		private static extern int MsiDatabaseOpenView(uint database, string query, out uint view);
+
+		[DllImport("msi.dll")]
+		private static extern int MsiViewExecute(uint view, uint record);
+
+		[DllImport("msi.dll")]
+		private static extern int MsiViewFetch(uint view, out uint record);
+
+		[DllImport("msi.dll")]
+		private static extern int MsiCloseHandle(uint handle);
 
 		/// <summary>Write the embedded MSI to a temp folder. Returns its path, or null if not embedded.</summary>
 		public static string ExtractPackage(string targetDir = null)

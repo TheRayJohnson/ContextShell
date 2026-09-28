@@ -242,8 +242,7 @@ namespace ContextShell.Setup
 			ShowPage(Page.Progress);
 
 			string package = null;
-			string target;
-			if(op == MsiOperation.Install || op == MsiOperation.Upgrade)
+			if(op != MsiOperation.Uninstall)
 			{
 				package = await Task.Run(() => MsiEngine.ExtractPackage());
 				if(package == null)
@@ -252,10 +251,7 @@ namespace ContextShell.Setup
 					ShowError("Setup is damaged", "This setup file doesn't contain the ContextShell package. Download it again from GitHub.", 1620);
 					return;
 				}
-				target = package;
 			}
-			else
-				target = _session.InstalledProductCode;
 
 			_engine = new MsiEngine { LogPath = _session.LogPath };
 			_engine.Progress += (value, status) => Dispatcher.BeginInvoke(new Action(() =>
@@ -276,7 +272,7 @@ namespace ContextShell.Setup
 			int rc = await Task.Run(() =>
 			{
 				SetupSession.CloseRunningApp();
-				int result = _engine.Run(op, target, properties);
+				int result = _engine.Run(op, package, _session.InstalledProductCode, properties);
 				if(op == MsiOperation.Repair && (result == 0 || result == MsiEngine.ERROR_SUCCESS_REBOOT_REQUIRED))
 					_session.Reregister();
 				return result;

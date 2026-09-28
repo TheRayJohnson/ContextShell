@@ -61,37 +61,39 @@ namespace ContextShell.Setup
 		private static int RunQuiet(SetupSession session)
 		{
 			MsiOperation op;
-			string target;
 			if(session.Uninstall)
 			{
 				if(!session.IsInstalled)
 					return 1605;
 				op = MsiOperation.Uninstall;
-				target = session.InstalledProductCode;
 			}
 			else if(session.Repair || session.IsSameVersion)
 			{
 				if(!session.IsInstalled)
 					return 1605;
 				op = MsiOperation.Repair;
-				target = session.InstalledProductCode;
 			}
 			else
 			{
 				if(session.IsNewerInstalled)
 					return 1638;
 				op = session.IsUpgrade ? MsiOperation.Upgrade : MsiOperation.Install;
-				target = MsiEngine.ExtractPackage();
-				if(target == null)
+			}
+
+			string package = null;
+			if(op != MsiOperation.Uninstall)
+			{
+				package = MsiEngine.ExtractPackage();
+				if(package == null)
 					return 1620;
 			}
 
 			SetupSession.CloseRunningApp();
 			var engine = new MsiEngine { Quiet = true, LogPath = session.LogPath };
-			int rc = engine.Run(op, target, session.BuildProperties());
+			int rc = engine.Run(op, package, session.InstalledProductCode, session.BuildProperties());
 			if(op == MsiOperation.Repair && (rc == 0 || rc == 3010))
 				session.Reregister();
-			Cleanup(target);
+			Cleanup(package);
 			return rc;
 		}
 
