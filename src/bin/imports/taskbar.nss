@@ -1,5 +1,7 @@
 ﻿menu(type="taskbar" vis=key.shift() or key.lbutton() pos=0 title=app.name image=\uE249)
 {
+	item(title="settings" image=\uE0F3 cmd='"@app.dir\ContextShell.exe"')
+	item(title="check for updates" image=\uE1D7 cmd='"@app.dir\ContextShell.exe"' args='--check-updates')
 	item(title="config" image=\uE10A cmd='"@app.cfg"')
 	item(title="manager" image=\uE0F3 admin cmd='"@app.exe"')
 	item(title="directory" image=\uE0E8 cmd='"@app.dir"')

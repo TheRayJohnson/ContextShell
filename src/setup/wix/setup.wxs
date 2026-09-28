@@ -60,6 +60,12 @@
 		<Property Id='BURNMSIMODIFY' Value='0' Secure='yes' />
 		<Property Id='BURNMSIREPAIR' Value='0' Secure='yes' />
 		<Property Id='BURNMSIUNINSTALL' Value='1' Secure='yes' />
+
+		<!-- Install options. ContextShell-Setup.exe sets these; msiexec users can too. -->
+		<Property Id='ADDSTARTMENU' Value='1' Secure='yes' />
+		<Property Id='ADDDESKTOP' Value='0' Secure='yes' />
+		<Property Id='AUTOUPDATE' Value='1' Secure='yes' />
+		<SetProperty Id='ARPINSTALLLOCATION' Value='[INSTALLFOLDER]' After='CostFinalize' />
 		
 		<StandardDirectory Id='$(var.PlatformProgramFilesFolder)'>
 			<Directory Id='INSTALLFOLDER' Name='$(var.FullName)'>
@@ -81,6 +87,7 @@
 						<File Id='theme_light.nss' Source='$(var.bin)\imports\themes\light.nss' />
 						<File Id='theme_acrylic.nss' Source='$(var.bin)\imports\themes\acrylic.nss' />
 						<File Id='theme_glass.nss' Source='$(var.bin)\imports\themes\glass.nss' />
+						<File Id='theme_liquid_glass.nss' Source='$(var.bin)\imports\themes\liquid-glass.nss' />
 					</Component>
 				</Directory>
 				<Directory Id='LANG' Name='lang'>
@@ -110,6 +117,25 @@
 					<File Id='readme.txt' Name='readme.txt' Source='$(var.bin)\readme.txt' />
 					<File Id='license.txt' Name='LICENSE' Source='$(var.bin)\license.txt' />
 				</Component>
+				<Component Id='SETTINGSAPP' Guid='{4065A24B-5A92-47A5-9618-63B1E9BEBD5F}'>
+					<File Id='ContextShell.exe' Checksum='yes' Name='ContextShell.exe' KeyPath='yes' Source='$(var.bin)\ContextShell.exe' />
+					<File Id='ContextShell.exe.config' Name='ContextShell.exe.config' Source='$(var.bin)\ContextShell.exe.config' />
+				</Component>
+				<!-- Read by ContextShell-Setup.exe on upgrade to keep the user's choices. -->
+				<Component Id='SETUPINFO' Guid='{41D53BFD-DE6A-43A5-B1E4-D51D8F2A8AA3}'>
+					<RegistryKey Root='HKLM' Key='SOFTWARE\TheRayJohnson\ContextShell\Setup'>
+						<RegistryValue Name='InstallFolder' Type='string' Value='[INSTALLFOLDER]' KeyPath='yes' />
+						<RegistryValue Name='Version' Type='string' Value='$(var.Version)' />
+						<RegistryValue Name='StartMenuShortcut' Type='string' Value='[ADDSTARTMENU]' />
+						<RegistryValue Name='DesktopShortcut' Type='string' Value='[ADDDESKTOP]' />
+						<RegistryValue Name='AutoUpdate' Type='string' Value='[AUTOUPDATE]' />
+					</RegistryKey>
+				</Component>
+				<!-- Sign-in update check. Silent unless GitHub has a newer release. -->
+				<Component Id='AUTOUPDATE' Guid='{891FCAA1-DB44-4D91-AB38-B2CB7337F4EA}' Condition='AUTOUPDATE = "1"'>
+					<RegistryValue Root='HKLM' Key='SOFTWARE\Microsoft\Windows\CurrentVersion\Run' Name='ContextShell Updates'
+						Type='string' Value='"[INSTALLFOLDER]ContextShell.exe" --check-updates --background' KeyPath='yes' />
+				</Component>
 				<Component Id='CONFIG' Guid='{3B407066-F28F-4AEE-B38B-D35CE6A15834}' NeverOverwrite='yes'>
 					<File Id='shell.nss' Name='shell.nss' KeyPath='yes' Source='$(var.bin)\shell.nss' />
 				</Component>
@@ -124,10 +150,17 @@
 			</Directory>
 		</StandardDirectory>
 		<StandardDirectory Id='ProgramMenuFolder'>
-			<Component Id='StartMenuShortcut' Guid='{E0D25478-D34D-4F8C-AAFF-75F6FC90665C}'>
+			<Component Id='StartMenuShortcut' Guid='{E0D25478-D34D-4F8C-AAFF-75F6FC90665C}' Condition='ADDSTARTMENU = "1"'>
 				<Shortcut Id='StartMenuShortcut' Directory='ProgramMenuFolder' Description='$(var.Info)'
-					WorkingDirectory='INSTALLFOLDER' Name='$(var.FullName)' Target='[!shell.exe]' />
+					WorkingDirectory='INSTALLFOLDER' Name='$(var.FullName)' Target='[!ContextShell.exe]' />
 				<RegistryValue Key='Software\TheRayJohnson\ContextShell' Root='HKCU' Type='string' Value='' KeyPath='yes' />
+			</Component>
+		</StandardDirectory>
+		<StandardDirectory Id='DesktopFolder'>
+			<Component Id='DesktopShortcut' Guid='{32CE63E0-E305-4A76-8C41-426F635BF3DD}' Condition='ADDDESKTOP = "1"'>
+				<Shortcut Id='DesktopShortcut' Directory='DesktopFolder' Description='$(var.Info)'
+					WorkingDirectory='INSTALLFOLDER' Name='$(var.FullName)' Target='[!ContextShell.exe]' />
+				<RegistryValue Key='Software\TheRayJohnson\ContextShell\Setup' Root='HKLM' Name='DesktopShortcutInstalled' Type='integer' Value='1' KeyPath='yes' />
 			</Component>
 		</StandardDirectory>
 <!--
@@ -143,6 +176,10 @@
 			<ComponentRef Id='THEMES' />
 			<ComponentRef Id='CLEANUP' />
 			<ComponentRef Id='StartMenuShortcut' />
+			<ComponentRef Id='DesktopShortcut' />
+			<ComponentRef Id='SETTINGSAPP' />
+			<ComponentRef Id='SETUPINFO' />
+			<ComponentRef Id='AUTOUPDATE' />
 			<ComponentRef Id='DisplayIcon' />
 			<!--<ComponentGroupRef Id="IMPORTSFiles"/>-->
 		</Feature>
@@ -154,8 +191,8 @@
 		<CustomAction Id='OnDowngrading' Error='A newer version of [ProductName] is already installed. Setup will now exit.' />
 		
 		<Upgrade Id='$(var.UpgradeCode)'>
-			<UpgradeVersion Property='NEWPRODUCTFOUND' Minimum='$(var.Version)' OnlyDetect='yes' />
-			<UpgradeVersion Property='UPGRADEFOUND' Minimum='1.0.0' Maximum='$(var.Version)' IncludeMinimum='yes' />
+			<UpgradeVersion Property='NEWPRODUCTFOUND' Minimum='$(var.Version)' IncludeMinimum='no' OnlyDetect='yes' />
+			<UpgradeVersion Property='UPGRADEFOUND' Minimum='1.0.0' Maximum='$(var.Version)' IncludeMinimum='yes' IncludeMaximum='yes' />
 		</Upgrade>
 		
 		<InstallUISequence>

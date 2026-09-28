@@ -44,11 +44,8 @@ Global
 		{F72D34CA-48DA-4DFD-91A9-A0C78BEF6981}.release|x86.ActiveCfg = release|Win32
 		{F72D34CA-48DA-4DFD-91A9-A0C78BEF6981}.release|x86.Build.0 = release|Win32
 		{F8A8D368-F53D-4EA1-9E17-404DA0CC89CD}.release|ARM64.ActiveCfg = Release|ARM64
-		{F8A8D368-F53D-4EA1-9E17-404DA0CC89CD}.release|ARM64.Build.0 = Release|ARM64
 		{F8A8D368-F53D-4EA1-9E17-404DA0CC89CD}.release|x64.ActiveCfg = Release|x64
-		{F8A8D368-F53D-4EA1-9E17-404DA0CC89CD}.release|x64.Build.0 = Release|x64
 		{F8A8D368-F53D-4EA1-9E17-404DA0CC89CD}.release|x86.ActiveCfg = Release|x86
-		{F8A8D368-F53D-4EA1-9E17-404DA0CC89CD}.release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
