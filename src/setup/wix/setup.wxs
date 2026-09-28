@@ -160,7 +160,7 @@
 			<Component Id='DesktopShortcut' Guid='{32CE63E0-E305-4A76-8C41-426F635BF3DD}' Condition='ADDDESKTOP = "1"'>
 				<Shortcut Id='DesktopShortcut' Directory='DesktopFolder' Description='$(var.Info)'
 					WorkingDirectory='INSTALLFOLDER' Name='$(var.FullName)' Target='[!ContextShell.exe]' />
-				<RegistryValue Key='Software\TheRayJohnson\ContextShell\Setup' Root='HKLM' Name='DesktopShortcutInstalled' Type='integer' Value='1' KeyPath='yes' />
+				<RegistryValue Key='Software\TheRayJohnson\ContextShell\Setup' Root='HKCU' Name='DesktopShortcutInstalled' Type='integer' Value='1' KeyPath='yes' />
 			</Component>
 		</StandardDirectory>
 <!--
