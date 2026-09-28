@@ -30,7 +30,9 @@ namespace ContextShell.Settings
 
 		public ConfigStore(string installFolder)
 		{
-			InstallFolder = installFolder;
+			// The MSI records "C:\...\ContextShell\" with a trailing backslash. Drop it: in a quoted
+			// command-line argument, \" escapes the closing quote and corrupts the path.
+			InstallFolder = installFolder?.TrimEnd('\\');
 		}
 
 		public bool IsValid => InstallFolder != null && File.Exists(ShellNss);
@@ -171,7 +173,7 @@ namespace ContextShell.Settings
 				File.WriteAllText(Path.Combine(stage, ManifestName), manifest.ToString());
 
 				var exe = Process.GetCurrentProcess().MainModule.FileName;
-				var psi = new ProcessStartInfo(exe, $"--apply \"{stage}\" --target \"{InstallFolder}\"")
+				var psi = new ProcessStartInfo(exe, $"--apply {QuoteArg(stage)} --target {QuoteArg(InstallFolder)}")
 				{
 					UseShellExecute = true,
 					Verb = "runas",
@@ -199,6 +201,9 @@ namespace ContextShell.Settings
 				try { Directory.Delete(stage, true); } catch { }
 			}
 		}
+
+		/// <summary>Quote a path for a command line. Trailing backslashes would escape the closing quote.</summary>
+		private static string QuoteArg(string path) => "\"" + path.TrimEnd('\\') + "\"";
 
 		private string RelativePath(string full) => full.Substring(InstallFolder.TrimEnd('\\').Length + 1);
 

@@ -68,7 +68,7 @@ namespace ContextShell.UI
 					using(var key = hklm.OpenSubKey(SetupKey))
 					{
 						if(key?.GetValue("InstallFolder") is string dir && Directory.Exists(dir))
-							return dir;
+							return dir.TrimEnd('\\');
 					}
 					// Fallback for 1.9.19, which had no Setup key: the COM registration.
 					using(var key = hklm.OpenSubKey(@"SOFTWARE\Classes\CLSID\" + ContextMenuClsid + @"\InprocServer32"))

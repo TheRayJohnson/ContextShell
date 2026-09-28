@@ -1,4 +1,4 @@
 <Include xmlns='http://wixtoolset.org/schemas/v4/wxs'>
-<?define Version = '1.9.20' ?>
+<?define Version = '1.9.21' ?>
 <?define ProductCode = '*' ?> <!-- new code every build: required for major upgrades -->
 </Include>
