@@ -150,7 +150,7 @@
 			</Directory>
 		</StandardDirectory>
 		<StandardDirectory Id='ProgramMenuFolder'>
-			<Component Id='StartMenuShortcut' Guid='{E0D25478-D34D-4F8C-AAFF-75F6FC90665C}' Condition='ADDSTARTMENU = "1"'>
+			<Component Id='StartMenuShortcut' Guid='{79A7E4EC-8438-4378-B380-59313E253F15}' Condition='ADDSTARTMENU = "1"'>
 				<Shortcut Id='StartMenuShortcut' Directory='ProgramMenuFolder' Description='$(var.Info)'
 					WorkingDirectory='INSTALLFOLDER' Name='$(var.FullName)' Target='[!ContextShell.exe]' />
 				<RegistryValue Key='Software\TheRayJohnson\ContextShell' Root='HKCU' Type='string' Value='' KeyPath='yes' />
