@@ -1,0 +1,42 @@
+// Solid light menu, regardless of the Windows setting.
+theme
+{
+	name="modern"
+	dark=false
+	background
+	{
+		color=#f9f9f9
+		opacity=100
+		effect=0
+	}
+	border
+	{
+		enabled=true
+		size=1
+		color=#d0d0d0
+		radius=3
+	}
+	item
+	{
+		radius=3
+		text
+		{
+			normal=#1a1a1a
+			select=#000000
+			normal.disabled=#a0a0a0
+			select.disabled=#a0a0a0
+		}
+		back
+		{
+			select=#e5e5e5
+			select.disabled=#f0f0f0
+		}
+	}
+	separator.color=#d0d0d0
+	symbol
+	{
+		normal=#1a1a1a
+		select=#000000
+	}
+	image.align=2
+}

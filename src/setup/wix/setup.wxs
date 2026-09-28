@@ -74,6 +74,15 @@
 						<File Id='file_manage.nss' Source='$(var.bin)\imports\file-manage.nss' />
 						<File Id='terminal.nss' Source='$(var.bin)\imports\terminal.nss' />
 					</Component>
+				<Directory Id='THEMES' Name='themes'>
+					<Component Id='THEMES' Guid='{12D45BEC-6409-414D-ABEC-2A02B270EBD1}'>
+						<File Id='theme_auto.nss' KeyPath='yes' Source='$(var.bin)\imports\themes\auto.nss' />
+						<File Id='theme_dark.nss' Source='$(var.bin)\imports\themes\dark.nss' />
+						<File Id='theme_light.nss' Source='$(var.bin)\imports\themes\light.nss' />
+						<File Id='theme_acrylic.nss' Source='$(var.bin)\imports\themes\acrylic.nss' />
+						<File Id='theme_glass.nss' Source='$(var.bin)\imports\themes\glass.nss' />
+					</Component>
+				</Directory>
 				<Directory Id='LANG' Name='lang'>
 					<Component Id='LANG' Guid='{BBE59710-FA39-47B8-8A20-866171A0D262}' NeverOverwrite='yes'>
 						<File Id='en.nss' Source='$(var.bin)\imports\lang\en.nss' />
@@ -83,6 +92,14 @@
 						<File Id='no.nss' Source='$(var.bin)\imports\lang\no.nss' />
 						<File Id='pt_BR.nss' Source='$(var.bin)\imports\lang\pt-BR.nss' />
 						<File Id='zh_CN.nss' Source='$(var.bin)\imports\lang\zh-CN.nss' />
+						<File Id='it.nss' Source='$(var.bin)\imports\lang\it.nss' />
+						<File Id='ja.nss' Source='$(var.bin)\imports\lang\ja.nss' />
+						<File Id='ro.nss' Source='$(var.bin)\imports\lang\ro.nss' />
+						<File Id='ru.nss' Source='$(var.bin)\imports\lang\ru.nss' />
+						<File Id='sl.nss' Source='$(var.bin)\imports\lang\sl.nss' />
+						<File Id='tr.nss' Source='$(var.bin)\imports\lang\tr.nss' />
+						<File Id='ua.nss' Source='$(var.bin)\imports\lang\ua.nss' />
+						<File Id='zh_TW.nss' Source='$(var.bin)\imports\lang\zh-TW.nss' />
 					</Component>
 				</Directory>
 				</Directory>
@@ -123,6 +140,7 @@
 			<ComponentRef Id='CONFIG' />
 			<ComponentRef Id='IMPORTS' />
 			<ComponentRef Id='LANG' />
+			<ComponentRef Id='THEMES' />
 			<ComponentRef Id='CLEANUP' />
 			<ComponentRef Id='StartMenuShortcut' />
 			<ComponentRef Id='DisplayIcon' />

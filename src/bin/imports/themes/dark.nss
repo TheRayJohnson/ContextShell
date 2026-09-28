@@ -1,0 +1,42 @@
+// Solid dark menu, regardless of the Windows setting.
+theme
+{
+	name="modern"
+	dark=true
+	background
+	{
+		color=#202020
+		opacity=100
+		effect=0
+	}
+	border
+	{
+		enabled=true
+		size=1
+		color=#3a3a3a
+		radius=3
+	}
+	item
+	{
+		radius=3
+		text
+		{
+			normal=#e6e6e6
+			select=#ffffff
+			normal.disabled=#7a7a7a
+			select.disabled=#7a7a7a
+		}
+		back
+		{
+			select=#383838
+			select.disabled=#2a2a2a
+		}
+	}
+	separator.color=#3a3a3a
+	symbol
+	{
+		normal=#e6e6e6
+		select=#ffffff
+	}
+	image.align=2
+}

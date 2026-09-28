@@ -52,6 +52,30 @@ To uninstall manually:
 Edit `shell.nss` in the install folder (default `C:\Program Files\ContextShell`). It imports the files in `imports\`.
 Changes apply the next time you open a menu. Hold `Shift` and right-click the taskbar for quick links to the config and folder.
 
+### Themes
+
+`imports\theme.nss` picks the theme with one import line. Change it to any preset in `imports\themes\`:
+
+| Preset | Look |
+|---|---|
+| `themes/auto.nss` | Solid, follows the Windows light/dark setting (default) |
+| `themes/dark.nss` | Solid dark |
+| `themes/light.nss` | Solid light |
+| `themes/acrylic.nss` | Frosted blur, mostly opaque |
+| `themes/glass.nss` | Nilesoft's default. Very see-through on busy wallpapers |
+
+```nss
+import 'themes/dark.nss'
+```
+
+Save and right-click again; no restart needed. To make your own, copy a preset and edit it.
+All theme options are in [docs/configuration/themes.html](docs/configuration/themes.html).
+
+Upgrading from v1.9.19: the installer keeps your existing `imports\theme.nss`, so the `themes\` presets
+are installed but not active. Replace the contents of `imports\theme.nss` with `import 'themes/auto.nss'` to switch.
+
+### Custom items
+
 Example: an "Open in new window" item for every folder, including Quick Access pins:
 
 ```nss
