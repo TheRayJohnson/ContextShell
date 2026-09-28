@@ -122,7 +122,7 @@ namespace ContextShell.Settings.Themes
 			for(int i = 0; i < choices.Length; i++)
 			{
 				box.Items.Add(new ComboBoxItem { Content = choices[i].Label, Tag = choices[i].Value });
-				if(normalized != null && string.Equals(normalized, choices[i].Value, StringComparison.OrdinalIgnoreCase))
+				if(normalized != null && string.Equals(normalized, choices[i].Value.Trim('"'), StringComparison.OrdinalIgnoreCase))
 					selected = i + 1;
 				// "view.compact" and "compact" are the same.
 				if(normalized != null && choices[i].Value.StartsWith("view.") && string.Equals("view." + normalized, choices[i].Value, StringComparison.OrdinalIgnoreCase))

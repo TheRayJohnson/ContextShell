@@ -103,9 +103,9 @@ namespace ContextShell.Settings
 		{
 			if(Store.HasChanges)
 			{
-				var answer = MessageBox.Show(this, "Save your changes before closing?", "ContextShell Settings",
-					MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
-				if(answer == MessageBoxResult.Cancel || (answer == MessageBoxResult.Yes && !SaveChanges()))
+				var answer = ConfirmDialog.Ask(this, "Save your changes?",
+					"You changed settings that haven't been saved yet.", "Save", "Save", "Don't save", "Cancel");
+				if(answer == null || answer == "Cancel" || (answer == "Save" && !SaveChanges()))
 				{
 					e.Cancel = true;
 					return;

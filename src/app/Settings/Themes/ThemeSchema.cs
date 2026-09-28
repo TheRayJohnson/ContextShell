@@ -89,7 +89,8 @@ namespace ContextShell.Settings.Themes
 				Fields =
 				{
 					Choice("name", "Base style", "The built-in style every other option starts from.",
-						("auto", "Auto"), ("modern", "Modern"), ("classic", "Classic"), ("white", "White"), ("black", "Black")),
+						// Quoted: the engine reads theme.name as a string.
+						("\"auto\"", "Auto"), ("\"modern\"", "Modern"), ("\"classic\"", "Classic"), ("\"white\"", "White"), ("\"black\"", "Black")),
 					Choice("view", "Density", "Row height of menu items.",
 						("auto", "Auto"), ("view.compact", "Compact"), ("view.small", "Small"), ("view.medium", "Medium"),
 						("view.large", "Large"), ("view.wide", "Wide")),
@@ -108,6 +109,7 @@ namespace ContextShell.Settings.Themes
 					Num("background.opacity", "Opacity", 0, 100, "100 is solid. Lower values let the effect show through.", auto: true),
 					Choice("background.effect", "Effect", "Transparency effects must be on in Windows Settings for blur, acrylic and mica.",
 						("auto", "Auto"), ("0", "None (solid)"), ("1", "Transparent"), ("2", "Blur"), ("3", "Acrylic"), ("4", "Mica"), ("5", "Mica alt (tabbed)")),
+					Color("background.tintcolor", "Effect tint", "Tint of the blur or acrylic effect."),
 					Toggle("background.gradient.enabled", "Gradient overlay"),
 					new ThemeField
 					{
@@ -213,6 +215,7 @@ namespace ContextShell.Settings.Themes
 				{
 					Toggle("image.enabled", "Show icons"),
 					new ThemeField { Path = "image.color", Label = "Glyph colors", Kind = FieldKind.ColorList, Parts = new[] { "Primary", "Secondary", "Accent" } },
+					Num("image.size", "Icon size", 8, 48),
 					Num("image.gap", "Gap", 0, 40, "Space between the icon and the text."),
 					new ThemeField { Path = "image.glyph", Label = "Glyph font", Kind = FieldKind.Font, Help = "Font used for built-in glyph icons." },
 					Toggle("image.scale", "Scale with DPI"),
