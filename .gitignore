@@ -40,3 +40,7 @@ src/setup/ca/obj/
 src/setup/wix/obj/
 src/packages/
 #src/bin/*.exe
+# ContextShell Setup and Settings (WPF) build output
+src/app/*/bin/
+src/app/*/obj/
+src/setup/out/

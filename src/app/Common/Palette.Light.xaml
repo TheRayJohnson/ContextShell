@@ -1,0 +1,42 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<!-- Windows 11 light palette with the ContextShell brand blue as accent. -->
+	<SolidColorBrush x:Key="WindowBackgroundBrush" Color="#F3F3F3" />
+	<SolidColorBrush x:Key="SurfaceBrush" Color="#B3FFFFFF" />
+	<SolidColorBrush x:Key="SurfaceStrokeBrush" Color="#0F000000" />
+	<SolidColorBrush x:Key="FooterBrush" Color="#80F9F9F9" />
+	<SolidColorBrush x:Key="DividerBrush" Color="#14000000" />
+
+	<SolidColorBrush x:Key="TextPrimaryBrush" Color="#E4000000" />
+	<SolidColorBrush x:Key="TextSecondaryBrush" Color="#9E000000" />
+	<SolidColorBrush x:Key="TextTertiaryBrush" Color="#72000000" />
+
+	<SolidColorBrush x:Key="AccentBrush" Color="#1364FD" />
+	<SolidColorBrush x:Key="AccentHoverBrush" Color="#2A76FF" />
+	<SolidColorBrush x:Key="AccentPressedBrush" Color="#0F54D6" />
+	<SolidColorBrush x:Key="AccentDisabledBrush" Color="#37000000" />
+	<SolidColorBrush x:Key="AccentTextBrush" Color="#FFFFFF" />
+	<SolidColorBrush x:Key="AccentForegroundBrush" Color="#0F54D6" />
+	<SolidColorBrush x:Key="AccentSubtleBrush" Color="#1A1364FD" />
+
+	<SolidColorBrush x:Key="ControlBrush" Color="#B3FFFFFF" />
+	<SolidColorBrush x:Key="ControlHoverBrush" Color="#80F9F9F9" />
+	<SolidColorBrush x:Key="ControlPressedBrush" Color="#4DF9F9F9" />
+	<SolidColorBrush x:Key="ControlStrokeBrush" Color="#1F000000" />
+	<SolidColorBrush x:Key="ControlStrongStrokeBrush" Color="#72000000" />
+	<SolidColorBrush x:Key="SubtleHoverBrush" Color="#09000000" />
+	<SolidColorBrush x:Key="SubtlePressedBrush" Color="#06000000" />
+
+	<SolidColorBrush x:Key="InputBrush" Color="#B3FFFFFF" />
+	<SolidColorBrush x:Key="InputFocusBrush" Color="#FFFFFF" />
+	<SolidColorBrush x:Key="InputUnderlineBrush" Color="#72000000" />
+
+	<SolidColorBrush x:Key="TrackBrush" Color="#1F000000" />
+	<SolidColorBrush x:Key="SuccessBrush" Color="#0F7B0F" />
+	<SolidColorBrush x:Key="CautionBrush" Color="#9D5D00" />
+	<SolidColorBrush x:Key="CriticalBrush" Color="#C42B1C" />
+	<SolidColorBrush x:Key="CriticalSubtleBrush" Color="#FDE7E9" />
+	<SolidColorBrush x:Key="FocusBrush" Color="#E4000000" />
+	<SolidColorBrush x:Key="OverlayBrush" Color="#4D000000" />
+	<SolidColorBrush x:Key="DialogBrush" Color="#FFFFFF" />
+</ResourceDictionary>

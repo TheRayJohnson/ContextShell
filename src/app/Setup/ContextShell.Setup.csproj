@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    ContextShell Setup: branded installer UI. It embeds the MSI built by src/setup/wix and drives it
+    through the Windows Installer API, so the MSI stays the install engine.
+    Build with src/setup/build-installer.ps1, which passes MsiPath.
+  -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>ContextShell-Setup</AssemblyName>
+    <RootNamespace>ContextShell.Setup</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AssemblyTitle>ContextShell Setup</AssemblyTitle>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(MsiPath)' != ''">
+    <EmbeddedResource Include="$(MsiPath)" LogicalName="ContextShell.msi" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,217 @@
+<Window x:Class="ContextShell.Setup.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ContextShell Setup" Width="640" Height="540" MinWidth="560" MinHeight="500"
+        ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen"
+        UseLayoutRounding="True" SnapsToDevicePixels="True"
+        TextOptions.TextFormattingMode="Ideal"
+        FontFamily="{StaticResource UIFont}" FontSize="14">
+	<Grid x:Name="Root">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+
+		<!-- Pages. Only one is visible at a time. -->
+		<Grid Grid.Row="0" Margin="40,28,40,20">
+
+			<!-- Welcome / update -->
+			<Grid x:Name="WelcomePage">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="*" />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+				<Image Source="/Assets/logo.png" Width="64" Height="64" HorizontalAlignment="Left"
+				       RenderOptions.BitmapScalingMode="HighQuality" />
+				<TextBlock x:Name="WelcomeTitle" Grid.Row="1" Margin="0,20,0,0" Style="{StaticResource TitleText}" Text="Install ContextShell" />
+				<TextBlock x:Name="WelcomeBody" Grid.Row="2" Margin="0,8,0,0" Style="{StaticResource SecondaryText}" />
+				<Border Grid.Row="3" Style="{StaticResource Card}" Margin="0,20,0,0" VerticalAlignment="Top" Padding="16,12">
+					<StackPanel>
+						<Grid Margin="0,4">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="32" />
+								<ColumnDefinition Width="*" />
+							</Grid.ColumnDefinitions>
+							<TextBlock Style="{StaticResource IconText}" Text="&#xE790;" Foreground="{DynamicResource AccentForegroundBrush}" />
+							<TextBlock Grid.Column="1" Text="Themes that follow Windows light and dark mode" />
+						</Grid>
+						<Grid Margin="0,4">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="32" />
+								<ColumnDefinition Width="*" />
+							</Grid.ColumnDefinitions>
+							<TextBlock Style="{StaticResource IconText}" Text="&#xE8FD;" Foreground="{DynamicResource AccentForegroundBrush}" />
+							<TextBlock Grid.Column="1" Text="Add, hide or move any right-click menu item" />
+						</Grid>
+						<Grid Margin="0,4">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="32" />
+								<ColumnDefinition Width="*" />
+							</Grid.ColumnDefinitions>
+							<TextBlock Style="{StaticResource IconText}" Text="&#xE945;" Foreground="{DynamicResource AccentForegroundBrush}" />
+							<TextBlock Grid.Column="1" Text="Lightweight: no services, no ads, no plugin store" />
+						</Grid>
+					</StackPanel>
+				</Border>
+				<StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,16,0,0">
+					<TextBlock x:Name="WelcomeVersion" Style="{StaticResource CaptionText}" VerticalAlignment="Center" />
+					<TextBlock Style="{StaticResource CaptionText}" Text="  ·  " VerticalAlignment="Center" />
+					<Button Style="{StaticResource LinkButton}" FontSize="12" Content="MIT License" Click="License_Click" />
+					<TextBlock Style="{StaticResource CaptionText}" Text="  ·  " VerticalAlignment="Center" />
+					<Button Style="{StaticResource LinkButton}" FontSize="12" Content="GitHub" Click="GitHub_Click" />
+				</StackPanel>
+			</Grid>
+
+			<!-- Options -->
+			<StackPanel x:Name="OptionsPage" Visibility="Collapsed">
+				<TextBlock Style="{StaticResource SubtitleText}" Text="Install options" />
+				<TextBlock Margin="0,6,0,0" Style="{StaticResource SecondaryText}" Text="You can change these later in ContextShell Settings." />
+
+				<TextBlock Margin="0,24,0,8" Style="{StaticResource BodyStrongText}" Text="Install location" />
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
+					<TextBox x:Name="FolderBox" TextChanged="FolderBox_TextChanged" AutomationProperties.Name="Install location" />
+					<Button Grid.Column="1" Margin="8,0,0,0" Content="Browse…" Click="Browse_Click" />
+				</Grid>
+				<TextBlock x:Name="FolderError" Margin="0,6,0,0" Style="{StaticResource CaptionText}" Foreground="{DynamicResource CriticalBrush}" Visibility="Collapsed" />
+				<TextBlock x:Name="FolderHint" Margin="0,6,0,0" Style="{StaticResource CaptionText}" Text="Needs about 6 MB of disk space." />
+
+				<TextBlock Margin="0,20,0,4" Style="{StaticResource BodyStrongText}" Text="Shortcuts" />
+				<CheckBox x:Name="StartMenuBox" Content="Add ContextShell to the Start menu" />
+				<CheckBox x:Name="DesktopBox" Content="Create a desktop shortcut" />
+
+				<TextBlock Margin="0,16,0,4" Style="{StaticResource BodyStrongText}" Text="Updates" />
+				<CheckBox x:Name="AutoUpdateBox" Content="Check for updates when I sign in" />
+				<TextBlock Margin="30,0,0,0" Style="{StaticResource CaptionText}"
+				           Text="Asks GitHub once a day whether a newer release exists. Nothing about you or your PC is sent." />
+			</StackPanel>
+
+			<!-- Progress -->
+			<Grid x:Name="ProgressPage" Visibility="Collapsed">
+				<StackPanel VerticalAlignment="Center">
+					<Image Source="/Assets/logo.png" Width="48" Height="48" HorizontalAlignment="Left" RenderOptions.BitmapScalingMode="HighQuality" />
+					<TextBlock x:Name="ProgressTitle" Margin="0,20,0,0" Style="{StaticResource SubtitleText}" Text="Installing ContextShell…" />
+					<TextBlock x:Name="ProgressStatus" Margin="0,8,0,0" Style="{StaticResource SecondaryText}" Text="Preparing…" />
+					<ProgressBar x:Name="Bar" Margin="0,20,0,0" Minimum="0" Maximum="1" IsIndeterminate="True" />
+					<TextBlock x:Name="ProgressPercent" Margin="0,8,0,0" Style="{StaticResource CaptionText}" HorizontalAlignment="Right" />
+				</StackPanel>
+			</Grid>
+
+			<!-- Finished -->
+			<Grid x:Name="FinishPage" Visibility="Collapsed">
+				<StackPanel VerticalAlignment="Center">
+					<Border x:Name="FinishBadge" Width="56" Height="56" CornerRadius="28" HorizontalAlignment="Left" Background="{DynamicResource AccentBrush}">
+						<TextBlock x:Name="FinishGlyph" Text="&#xE73E;" FontFamily="{StaticResource IconFont}" FontSize="26"
+						           Foreground="{DynamicResource AccentTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+					</Border>
+					<TextBlock x:Name="FinishTitle" Margin="0,20,0,0" Style="{StaticResource TitleText}" Text="ContextShell is installed" />
+					<TextBlock x:Name="FinishBody" Margin="0,8,0,0" Style="{StaticResource SecondaryText}" />
+					<CheckBox x:Name="LaunchBox" Margin="0,20,0,0" IsChecked="True" Content="Open ContextShell Settings" />
+				</StackPanel>
+			</Grid>
+
+			<!-- Already installed: repair or uninstall -->
+			<StackPanel x:Name="MaintenancePage" Visibility="Collapsed">
+				<Image Source="/Assets/logo.png" Width="48" Height="48" HorizontalAlignment="Left" RenderOptions.BitmapScalingMode="HighQuality" />
+				<TextBlock x:Name="MaintenanceTitle" Margin="0,20,0,0" Style="{StaticResource SubtitleText}" />
+				<TextBlock Margin="0,6,0,20" Style="{StaticResource SecondaryText}" Text="What would you like to do?" />
+				<Button x:Name="RepairButton" Style="{StaticResource CardButton}" Click="Repair_Click" Margin="0,0,0,8">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="40" />
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="Auto" />
+						</Grid.ColumnDefinitions>
+						<TextBlock Style="{StaticResource IconText}" FontSize="20" Text="&#xE90F;" />
+						<StackPanel Grid.Column="1">
+							<TextBlock Style="{StaticResource BodyStrongText}" Text="Repair" />
+							<TextBlock Style="{StaticResource CaptionText}" Text="Restore missing files and add ContextShell to File Explorer again. Your config files are kept." />
+						</StackPanel>
+						<TextBlock Grid.Column="2" Style="{StaticResource IconText}" FontSize="12" Text="&#xE76C;" Margin="12,0,0,0" />
+					</Grid>
+				</Button>
+				<Button x:Name="UninstallButton" Style="{StaticResource CardButton}" Click="Uninstall_Click">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="40" />
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="Auto" />
+						</Grid.ColumnDefinitions>
+						<TextBlock Style="{StaticResource IconText}" FontSize="20" Text="&#xE74D;" />
+						<StackPanel Grid.Column="1">
+							<TextBlock Style="{StaticResource BodyStrongText}" Text="Uninstall" />
+							<TextBlock Style="{StaticResource CaptionText}" Text="Remove ContextShell and restore the standard Windows right-click menu." />
+						</StackPanel>
+						<TextBlock Grid.Column="2" Style="{StaticResource IconText}" FontSize="12" Text="&#xE76C;" Margin="12,0,0,0" />
+					</Grid>
+				</Button>
+			</StackPanel>
+
+			<!-- Error / blocked -->
+			<Grid x:Name="ErrorPage" Visibility="Collapsed">
+				<StackPanel VerticalAlignment="Center">
+					<Border x:Name="ErrorBadge" Width="56" Height="56" CornerRadius="28" HorizontalAlignment="Left" Background="{DynamicResource CriticalSubtleBrush}">
+						<TextBlock x:Name="ErrorGlyph" Text="&#xE783;" FontFamily="{StaticResource IconFont}" FontSize="26"
+						           Foreground="{DynamicResource CriticalBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+					</Border>
+					<TextBlock x:Name="ErrorTitle" Margin="0,20,0,0" Style="{StaticResource TitleText}" Text="Setup couldn't finish" />
+					<TextBlock x:Name="ErrorBody" Margin="0,8,0,0" Style="{StaticResource SecondaryText}" />
+					<TextBlock x:Name="ErrorCode" Margin="0,12,0,0" Style="{StaticResource CaptionText}" />
+					<Button x:Name="LogLink" Margin="0,8,0,0" Style="{StaticResource LinkButton}" Content="Open the setup log" Click="Log_Click" />
+				</StackPanel>
+			</Grid>
+		</Grid>
+
+		<!-- Footer with the page's buttons -->
+		<Border Grid.Row="1" Background="{DynamicResource FooterBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0">
+			<Grid Margin="40,16">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
+				<Button x:Name="SecondaryButton" Grid.Column="1" Margin="0,0,8,0" Content="Cancel" Click="Secondary_Click" IsCancel="True" />
+				<Button x:Name="PrimaryButton" Grid.Column="2" Style="{StaticResource AccentButton}" MinWidth="120" Click="Primary_Click" IsDefault="True">
+					<StackPanel Orientation="Horizontal">
+						<TextBlock x:Name="PrimaryText" Text="Continue" Foreground="{DynamicResource AccentTextBrush}" FontWeight="SemiBold" />
+						<TextBlock x:Name="PrimaryArrow" Text="&#xE72A;" FontFamily="{StaticResource IconFont}" FontSize="12" Margin="8,1,0,0"
+						           VerticalAlignment="Center" Foreground="{DynamicResource AccentTextBrush}" />
+					</StackPanel>
+				</Button>
+			</Grid>
+		</Border>
+
+		<!-- In-window dialog for Windows Installer prompts and confirmations -->
+		<Grid x:Name="DialogLayer" Grid.RowSpan="2" Visibility="Collapsed" Background="{DynamicResource OverlayBrush}">
+			<Border MaxWidth="440" Margin="32" VerticalAlignment="Center" HorizontalAlignment="Center"
+			        Background="{DynamicResource DialogBrush}" BorderBrush="{DynamicResource ControlStrokeBrush}" BorderThickness="1"
+			        CornerRadius="{StaticResource OverlayRadius}">
+				<Border.Effect>
+					<DropShadowEffect BlurRadius="24" ShadowDepth="6" Opacity="0.25" />
+				</Border.Effect>
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*" />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
+					<StackPanel Margin="24,24,24,20">
+						<TextBlock x:Name="DialogTitle" Style="{StaticResource SubtitleText}" />
+						<ScrollViewer MaxHeight="220" Margin="0,12,0,0" VerticalScrollBarVisibility="Auto">
+							<TextBlock x:Name="DialogText" TextWrapping="Wrap" />
+						</ScrollViewer>
+					</StackPanel>
+					<Border Grid.Row="1" Background="{DynamicResource FooterBrush}" BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0"
+					        CornerRadius="0,0,8,8">
+						<StackPanel x:Name="DialogButtons" Orientation="Horizontal" HorizontalAlignment="Right" Margin="24,16" />
+					</Border>
+				</Grid>
+			</Border>
+		</Grid>
+	</Grid>
+</Window>

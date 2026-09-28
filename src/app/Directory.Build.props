@@ -1,0 +1,43 @@
+<Project>
+  <!-- Shared settings for the ContextShell setup and settings apps (WPF, .NET Framework 4.8). -->
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+    <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
+    <DebugType>embedded</DebugType>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <Deterministic>true</Deterministic>
+
+    <!-- Product version. build-installer.ps1 passes the version from src/setup/wix/var.wxi. -->
+    <Version Condition="'$(Version)' == ''">0.0.0</Version>
+    <Company>TheRayJohnson</Company>
+    <Product>ContextShell</Product>
+    <Copyright>© Nilesoft Ltd., © TheRayJohnson (MIT)</Copyright>
+
+    <!-- GitHub owner/repo that update checks query. CI passes GITHUB_REPOSITORY. -->
+    <UpdateRepository Condition="'$(UpdateRepository)' == ''">TheRayJohnson/ContextShell</UpdateRepository>
+
+    <ApplicationIcon>$(MSBuildThisFileDirectory)..\shared\Resource\main.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+      <_Parameter1>UpdateRepository</_Parameter1>
+      <_Parameter2>$(UpdateRepository)</_Parameter2>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Common\**\*.cs" Link="Common\%(RecursiveDir)%(Filename)%(Extension)" />
+    <Page Include="$(MSBuildThisFileDirectory)Common\**\*.xaml" Link="Common\%(RecursiveDir)%(Filename)%(Extension)" />
+    <Resource Include="$(MSBuildThisFileDirectory)Common\Assets\logo.png" Link="Assets\logo.png" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+  </ItemGroup>
+</Project>

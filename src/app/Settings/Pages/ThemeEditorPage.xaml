@@ -1,0 +1,81 @@
+<UserControl x:Class="ContextShell.Settings.Pages.ThemeEditorPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<Grid Margin="36,24,24,0">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition x:Name="PreviewColumn" Width="340" />
+		</Grid.ColumnDefinitions>
+
+		<!-- Header -->
+		<Grid Grid.ColumnSpan="2" Margin="0,0,12,16">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+			<Button Style="{StaticResource SubtleButton}" Click="Back_Click" ToolTip="Back to Appearance" Width="36" Height="36" Padding="0" VerticalAlignment="Top">
+				<TextBlock Style="{StaticResource IconText}" Text="&#xE72B;" />
+			</Button>
+			<StackPanel Grid.Column="1" Margin="8,0,16,0">
+				<TextBlock x:Name="HeaderTitle" Style="{StaticResource SubtitleText}" Text="Edit theme" />
+				<TextBlock x:Name="HeaderHint" Style="{StaticResource CaptionText}" />
+			</StackPanel>
+			<StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top">
+				<Button Content="Save" Click="Save_Click" />
+				<Button Margin="8,0,0,0" Style="{StaticResource AccentButton}" Content="Save and use" Click="SaveUse_Click" />
+			</StackPanel>
+		</Grid>
+
+		<!-- Options -->
+		<ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="0,0,12,0">
+			<StackPanel Margin="0,0,0,32">
+				<Border Style="{StaticResource Card}" Margin="0,0,0,12">
+					<StackPanel>
+						<Grid Margin="0,0,0,8">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="*" />
+								<ColumnDefinition Width="Auto" />
+							</Grid.ColumnDefinitions>
+							<StackPanel VerticalAlignment="Center">
+								<TextBlock Text="Name" />
+								<TextBlock Style="{StaticResource CaptionText}" Text="Saved as imports\themes\&lt;name&gt;.nss" />
+							</StackPanel>
+							<TextBox x:Name="NameBox" Grid.Column="1" Width="260" TextChanged="NameBox_TextChanged" />
+						</Grid>
+						<TextBlock x:Name="NameError" Style="{StaticResource CaptionText}" Foreground="{DynamicResource CriticalBrush}" Visibility="Collapsed" HorizontalAlignment="Right" />
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="*" />
+								<ColumnDefinition Width="Auto" />
+							</Grid.ColumnDefinitions>
+							<TextBlock Text="Description" VerticalAlignment="Center" />
+							<TextBox x:Name="DescriptionBox" Grid.Column="1" Width="260" TextChanged="DescriptionBox_TextChanged" />
+						</Grid>
+					</StackPanel>
+				</Border>
+				<StackPanel x:Name="Groups" />
+			</StackPanel>
+		</ScrollViewer>
+
+		<!-- Live preview -->
+		<StackPanel Grid.Row="1" Grid.Column="1" Margin="12,0,12,24">
+			<Grid Margin="0,0,0,10">
+				<TextBlock Style="{StaticResource BodyStrongText}" Text="Preview" VerticalAlignment="Center" />
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+					<RadioButton x:Name="PreviewLight" Content="Light" Margin="0,0,12,0" GroupName="EditorMode" Checked="Mode_Checked" />
+					<RadioButton x:Name="PreviewDark" Content="Dark" GroupName="EditorMode" Checked="Mode_Checked" />
+				</StackPanel>
+			</Grid>
+			<Border CornerRadius="8" BorderBrush="{DynamicResource SurfaceStrokeBrush}" BorderThickness="1" ClipToBounds="True">
+				<ContentControl x:Name="PreviewHost" Height="420" Focusable="False" />
+			</Border>
+			<TextBlock Margin="0,10,0,0" Style="{StaticResource CaptionText}"
+			           Text="The preview is close to the real menu. Blur and acrylic are drawn by Windows, so right-click in Explorer after saving to see the exact look." />
+		</StackPanel>
+	</Grid>
+</UserControl>

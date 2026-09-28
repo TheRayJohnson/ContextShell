@@ -1,0 +1,101 @@
+<Window x:Class="ContextShell.Settings.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ContextShell Settings" Width="1100" Height="760" MinWidth="880" MinHeight="560"
+        WindowStartupLocation="CenterScreen" UseLayoutRounding="True" SnapsToDevicePixels="True"
+        TextOptions.TextFormattingMode="Ideal"
+        FontFamily="{StaticResource UIFont}" FontSize="14">
+	<Grid x:Name="Root">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="240" />
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
+
+		<!-- Navigation -->
+		<DockPanel Margin="12,16,8,16">
+			<StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="12,0,0,20">
+				<Image Source="/Assets/logo.png" Width="24" Height="24" RenderOptions.BitmapScalingMode="HighQuality" />
+				<TextBlock Margin="10,0,0,0" Text="ContextShell" FontWeight="SemiBold" VerticalAlignment="Center" />
+			</StackPanel>
+			<StackPanel DockPanel.Dock="Bottom">
+				<TextBlock x:Name="VersionText" Margin="14,0,0,0" Style="{StaticResource CaptionText}" />
+			</StackPanel>
+			<StackPanel>
+				<RadioButton x:Name="NavAppearance" Style="{StaticResource NavItem}" GroupName="Nav" Checked="Nav_Checked" Tag="appearance">
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Style="{StaticResource IconText}" Text="&#xE790;" />
+						<TextBlock Margin="14,0,0,0" Text="Appearance" VerticalAlignment="Center" />
+					</StackPanel>
+				</RadioButton>
+				<RadioButton x:Name="NavMenu" Style="{StaticResource NavItem}" GroupName="Nav" Checked="Nav_Checked" Tag="menu">
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Style="{StaticResource IconText}" Text="&#xE8FD;" />
+						<TextBlock Margin="14,0,0,0" Text="Menu" VerticalAlignment="Center" />
+					</StackPanel>
+				</RadioButton>
+				<RadioButton x:Name="NavUpdates" Style="{StaticResource NavItem}" GroupName="Nav" Checked="Nav_Checked" Tag="updates">
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Style="{StaticResource IconText}" Text="&#xE895;" />
+						<TextBlock Margin="14,0,0,0" Text="Updates" VerticalAlignment="Center" />
+						<Ellipse x:Name="UpdateDot" Width="8" Height="8" Margin="10,0,0,0" Fill="{DynamicResource AccentBrush}" Visibility="Collapsed" VerticalAlignment="Center" />
+					</StackPanel>
+				</RadioButton>
+				<RadioButton x:Name="NavAbout" Style="{StaticResource NavItem}" GroupName="Nav" Checked="Nav_Checked" Tag="about">
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Style="{StaticResource IconText}" Text="&#xE946;" />
+						<TextBlock Margin="14,0,0,0" Text="About" VerticalAlignment="Center" />
+					</StackPanel>
+				</RadioButton>
+			</StackPanel>
+		</DockPanel>
+
+		<!-- Page area -->
+		<Grid Grid.Column="1">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+			<Border Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource SurfaceStrokeBrush}" BorderThickness="1,1,0,0"
+			        CornerRadius="8,0,0,0" Grid.RowSpan="2" />
+			<ContentControl x:Name="PageHost" Focusable="False" />
+
+			<!-- Unsaved changes bar -->
+			<Border x:Name="SaveBar" Grid.Row="1" Visibility="Collapsed" Background="{DynamicResource FooterBrush}"
+			        BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0">
+				<Grid Margin="32,12">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
+					<TextBlock Style="{StaticResource IconText}" Text="&#xE7BA;" Foreground="{DynamicResource CautionBrush}" />
+					<StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+						<TextBlock x:Name="SaveText" Text="You have unsaved changes." />
+						<TextBlock x:Name="SaveError" Style="{StaticResource CaptionText}" Foreground="{DynamicResource CriticalBrush}" Visibility="Collapsed" />
+					</StackPanel>
+					<Button Grid.Column="2" Content="Discard" Click="Discard_Click" />
+					<Button Grid.Column="3" Margin="8,0,0,0" Style="{StaticResource AccentButton}" Click="Save_Click"
+					        ToolTip="ContextShell's files are in Program Files, so Windows asks for administrator permission.">
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="&#xEA18;" FontFamily="{StaticResource IconFont}" FontSize="14" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="{DynamicResource AccentTextBrush}" />
+							<TextBlock Text="Save changes" Foreground="{DynamicResource AccentTextBrush}" FontWeight="SemiBold" />
+						</StackPanel>
+					</Button>
+				</Grid>
+			</Border>
+
+			<!-- Toast for short confirmations -->
+			<Border x:Name="Toast" Grid.RowSpan="2" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,24"
+			        Background="{DynamicResource DialogBrush}" BorderBrush="{DynamicResource ControlStrokeBrush}" BorderThickness="1" CornerRadius="8" Padding="16,10">
+				<Border.Effect>
+					<DropShadowEffect BlurRadius="16" ShadowDepth="4" Opacity="0.2" />
+				</Border.Effect>
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Style="{StaticResource IconText}" Text="&#xE73E;" Foreground="{DynamicResource SuccessBrush}" />
+					<TextBlock x:Name="ToastText" Margin="10,0,0,0" VerticalAlignment="Center" />
+				</StackPanel>
+			</Border>
+		</Grid>
+	</Grid>
+</Window>

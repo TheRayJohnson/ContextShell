@@ -1,0 +1,78 @@
+<UserControl x:Class="ContextShell.Settings.Pages.MenuPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<ScrollViewer VerticalScrollBarVisibility="Auto">
+		<StackPanel Margin="36,28,36,36" MaxWidth="1000">
+			<TextBlock Style="{StaticResource TitleText}" Text="Menu" />
+			<TextBlock Margin="0,6,0,0" Style="{StaticResource SecondaryText}" Text="Choose what your right-click menu shows and how it behaves." />
+
+			<TextBlock Margin="0,24,0,10" Style="{StaticResource BodyStrongText}" Text="Sections" />
+			<StackPanel x:Name="Sections" />
+
+			<TextBlock Margin="0,24,0,10" Style="{StaticResource BodyStrongText}" Text="Behavior" />
+			<Border Style="{StaticResource SettingRow}">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="40" />
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
+					<TextBlock Style="{StaticResource IconText}" Text="&#xE916;" />
+					<StackPanel Grid.Column="1" VerticalAlignment="Center">
+						<TextBlock Text="Submenu delay" />
+						<TextBlock Style="{StaticResource CaptionText}" Text="How long to hover before a submenu opens." />
+					</StackPanel>
+					<ComboBox x:Name="DelayBox" Grid.Column="2" MinWidth="160" SelectionChanged="DelayBox_SelectionChanged" />
+				</Grid>
+			</Border>
+			<Border Style="{StaticResource SettingRow}">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="40" />
+						<ColumnDefinition Width="*" />
+					</Grid.ColumnDefinitions>
+					<TextBlock Style="{StaticResource IconText}" Text="&#xE82F;" />
+					<CheckBox x:Name="TipsBox" Grid.Column="1" Style="{StaticResource ToggleSwitch}" Checked="Tips_Changed" Unchecked="Tips_Changed">
+						<StackPanel>
+							<TextBlock Text="Tooltips" />
+							<TextBlock Style="{StaticResource CaptionText}" Text="Show descriptions when you hover over items that have one." />
+						</StackPanel>
+					</CheckBox>
+				</Grid>
+			</Border>
+
+			<TextBlock Margin="0,24,0,10" Style="{StaticResource BodyStrongText}" Text="File Explorer" />
+			<Border Style="{StaticResource SettingRow}">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="40" />
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
+					<TextBlock Style="{StaticResource IconText}" Text="&#xEC7A;" />
+					<StackPanel Grid.Column="1" VerticalAlignment="Center">
+						<TextBlock Text="ContextShell in File Explorer" />
+						<TextBlock x:Name="RegisteredText" Style="{StaticResource CaptionText}" />
+					</StackPanel>
+					<Button x:Name="RegisterButton" Grid.Column="2" Click="Register_Click" />
+				</Grid>
+			</Border>
+			<Border Style="{StaticResource SettingRow}">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="40" />
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
+					<TextBlock Style="{StaticResource IconText}" Text="&#xE72C;" />
+					<StackPanel Grid.Column="1" VerticalAlignment="Center">
+						<TextBlock Text="Restart File Explorer" />
+						<TextBlock Style="{StaticResource CaptionText}" Text="Only needed if the menu looks stuck. Open Explorer windows will close." />
+					</StackPanel>
+					<Button Grid.Column="2" Content="Restart" Click="RestartExplorer_Click" />
+				</Grid>
+			</Border>
+			<TextBlock x:Name="ActionError" Style="{StaticResource CaptionText}" Foreground="{DynamicResource CriticalBrush}" Visibility="Collapsed" Margin="0,6,0,0" />
+		</StackPanel>
+	</ScrollViewer>
+</UserControl>

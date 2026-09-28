@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    ContextShell Settings (ContextShell.exe): theme gallery and editor, menu options, and update checks.
+    Installed next to shell.dll by the MSI.
+  -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>ContextShell</AssemblyName>
+    <RootNamespace>ContextShell.Settings</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AssemblyTitle>ContextShell Settings</AssemblyTitle>
+  </PropertyGroup>
+</Project>
