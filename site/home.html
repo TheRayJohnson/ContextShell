@@ -1,0 +1,89 @@
+<section class="hero">
+	<img class="hero-logo" src="assets/logo.png" width="96" height="96" alt="">
+	<h1>A better right-click menu<br>for Windows</h1>
+	<p class="lead">ContextShell lets you theme, tidy and extend the File Explorer context menu on Windows 10 and 11.
+		Free, open source, and nothing running in the background.</p>
+	<div class="cta">
+		<a class="button primary large" href="{{latest}}">
+			<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 21h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+			Download for Windows
+		</a>
+		<a class="button large" href="docs/get-started/">Get started</a>
+	</div>
+	<p class="fineprint">Windows 10 and 11 · x64, ARM64 and x86 · MIT License</p>
+</section>
+
+<section class="showcase">
+	<img class="shot theme-aware" data-light="assets/img/settings-appearance-light.png" data-dark="assets/img/settings-appearance-dark.png"
+	     src="assets/img/settings-appearance-light.png" alt="ContextShell Settings showing the theme gallery" width="1100" height="720">
+	<p class="caption">ContextShell Settings: pick a theme, or customize every option with a live preview.</p>
+</section>
+
+<section class="features">
+	<div class="feature">
+		<div class="feature-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18V3z" fill="currentColor" stroke="none" opacity=".35"/></g></svg></div>
+		<h3>Themes that follow Windows</h3>
+		<p>Pick Windows, Liquid Glass, Dark, Light or Acrylic. Themes switch with Windows light and dark mode automatically.</p>
+	</div>
+	<div class="feature">
+		<div class="feature-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></g></svg></div>
+		<h3>Edit every option</h3>
+		<p>The theme editor covers every setting, from colors and blur to padding and gradients, with a live preview.</p>
+	</div>
+	<div class="feature">
+		<div class="feature-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 12h5M8 15h3"/></g></svg></div>
+		<h3>Tidy the clutter</h3>
+		<p>Hide, move or group items Windows and other apps add. Turn whole sections on or off with one switch.</p>
+	</div>
+	<div class="feature">
+		<div class="feature-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M12 8v8M8 12h8"/></g></svg></div>
+		<h3>Add your own items</h3>
+		<p>Open terminals here, copy paths, jump to folders, run scripts. Write items in a simple text config.</p>
+	</div>
+	<div class="feature">
+		<div class="feature-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3L5 13h6l-1 8 8-10h-6l1-8z"/></g></svg></div>
+		<h3>Light and fast</h3>
+		<p>A small native extension. No services, no tray icon, no ads and no plugin store.</p>
+	</div>
+	<div class="feature">
+		<div class="feature-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 0 1-14.3 4.9M4 12A8 8 0 0 1 18.3 7.1"/><path d="M18.5 3v4.2h-4.2M5.5 21v-4.2h4.2"/></g></svg></div>
+		<h3>Safe updates</h3>
+		<p>Optional update notices from GitHub Releases. Every download is checked against its SHA-256 checksum.</p>
+	</div>
+</section>
+
+<section class="split">
+	<div>
+		<h2>Your menu, in plain text</h2>
+		<p>Everything the Settings app does is saved as readable <code>.nss</code> files, so you can keep going by hand.
+			Changes apply the next time you right-click.</p>
+		<p><a href="docs/configuration/new-items/">Add new items</a> · <a href="docs/configuration/modify-items/">Change existing items</a> · <a href="docs/configuration/themes/">Theme options</a></p>
+	</div>
+	<pre><code class="lang-shell">// Open any folder in a new window, including Quick Access pins
+item(type='dir' title='Open in new window'
+     image= cmd='explorer.exe' args='"@sel.path"')
+
+// A soft, glassy menu that follows Windows light/dark
+theme
+{
+	background.color = @if(sys.dark, #1c1c1e, #f5f5f7)
+	background.opacity = 78
+	background.effect = 3
+}</code></pre>
+</section>
+
+<section class="gallery">
+	<h2>What it looks like</h2>
+	<div class="gallery-grid">
+		<img src="assets/screenshots/file-manage.png" alt="File manage submenu" loading="lazy">
+		<img src="assets/screenshots/terminal.png" alt="Terminal submenu" loading="lazy">
+		<img src="assets/screenshots/goto2.png" alt="Go To submenu" loading="lazy">
+		<img src="assets/screenshots/taskbar.png" alt="Taskbar menu" loading="lazy">
+	</div>
+</section>
+
+<section class="closing">
+	<h2>Ready to try it?</h2>
+	<p>Setup takes a few seconds, and you can remove it any time from Settings &gt; Apps.</p>
+	<a class="button primary large" href="{{latest}}">Download ContextShell</a>
+</section>

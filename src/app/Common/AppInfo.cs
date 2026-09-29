@@ -44,6 +44,9 @@ namespace ContextShell.UI
 
 		public static string RepositoryUrl => "https://github.com/" + Repository;
 
+		/// <summary>Documentation site (GitHub Pages, built from docs/ by site/build.py).</summary>
+		public const string DocsUrl = "https://therayjohnson.github.io/ContextShell/docs/";
+
 		/// <summary>Architecture name used in release asset names: x64, x86 or arm64.</summary>
 		public static string OSArchitecture
 		{

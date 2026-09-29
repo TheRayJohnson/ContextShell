@@ -53,8 +53,8 @@
 		<Property Id='MSIRESTARTMANAGERCONTROL' Value='Disable' />
 		<Property Id='DefaultUIFont' Value='WixUI_Font_Normal' />
 		<Property Id='ErrorDialog' Value='ErrorDlg' />
-		<Property Id='ARPURLINFOABOUT' Value='https://github.com/TheRayJohnson/ContextShell' />
-		<Property Id='ARPHELPLINK' Value='https://github.com/TheRayJohnson/ContextShell/tree/main/docs' />
+		<Property Id='ARPURLINFOABOUT' Value='https://therayjohnson.github.io/ContextShell/' />
+		<Property Id='ARPHELPLINK' Value='https://therayjohnson.github.io/ContextShell/docs/' />
 		<Property Id='ARPNOMODIFY' Value='1' Secure='yes' />
 		<Property Id='ARPNOREPAIR' Value='1' Secure='yes' />
 		<Property Id='BURNMSIMODIFY' Value='0' Secure='yes' />

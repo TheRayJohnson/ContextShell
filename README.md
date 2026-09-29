@@ -7,6 +7,8 @@ A context menu manager for Windows 10 and 11 File Explorer. Free, open source, M
 ContextShell is a fork of [Nilesoft Shell](https://github.com/moudey/Shell). It keeps the Shell engine and its `.nss`
 config language, and adds a settings app, a theme editor and a proper installer. No plugin marketplace, no ads, no telemetry.
 
+**Website and documentation: https://therayjohnson.github.io/ContextShell/**
+
 <p align="center">
 <img src="/screenshots/folder-back.png"><img src="/screenshots/file-manage.png"><br>
 <img src="/screenshots/terminal.png"><img src="/screenshots/taskbar.png"><br>
@@ -75,7 +77,7 @@ To remove it: `.\shell.exe -unregister -restart`.
 Open **ContextShell Settings** from the Start menu, or hold `Shift` and right-click the taskbar.
 
 * **Appearance**: choose a theme, or **Customize** one. The editor covers every option in
-  [docs/configuration/themes.html](docs/configuration/themes.html), and any color can have a separate dark-mode value.
+  [Themes](https://therayjohnson.github.io/ContextShell/docs/configuration/themes/), and any color can have a separate dark-mode value.
   Built-in themes are never overwritten: your version is saved as a new theme.
 * **Menu**: turn sections like Terminal, File manage and Go To on or off, set the submenu delay, and restart Explorer.
 * **Updates**: check now, or turn sign-in checks off.
@@ -106,7 +108,8 @@ Example: an "Open in new window" item for every folder, including Quick Access p
 item(type='dir' title='Open in new window' image=\uE0E8 cmd='explorer.exe' args='"@sel.path"')
 ```
 
-Syntax docs: [docs/](docs/). The syntax is the same as Nilesoft Shell, so its [online docs](https://nilesoft.org/docs) apply too.
+Full syntax reference: [ContextShell docs](https://therayjohnson.github.io/ContextShell/docs/). The syntax is the same as
+Nilesoft Shell, so existing Nilesoft configs work unchanged.
 
 ## Updates
 
@@ -140,6 +143,7 @@ msbuild /m /p:Configuration=release /p:Platform=x64 src/Shell.sln
 | `src/app/Setup` | Branded setup UI (WPF). Runs the MSI through the Windows Installer API |
 | `src/app/Settings` | ContextShell Settings and the update checker (WPF) |
 | `src/app/Common` | Shared Windows 11 styles, light/dark palettes, update client |
+| `docs/`, `site/` | Documentation pages and the website builder. `python site/build.py` writes `site/_site`, which GitHub Pages serves |
 
 To preview the UI without installing anything, run `setup-x64.exe /screenshots <dir>` or
 `ContextShell.exe --screenshots <dir> --config src/bin`. Both render every page in light and dark mode to PNG.

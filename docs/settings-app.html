@@ -1,0 +1,46 @@
+<h4>ContextShell Settings</h4>
+<br>
+<p><b>ContextShell Settings</b> lets you change how the menu looks and what it shows without editing config files.
+	Open it from the Start menu, or hold <kbd>Shift</kbd> and right-click the taskbar, then choose <b>settings</b>.</p>
+<p>ContextShell's files are in Program Files, so Windows asks for administrator permission once when you click
+	<b>Save changes</b>. The menu picks up the change the next time you right-click.</p>
+
+<h5 id="appearance">Appearance</h5>
+<p>Pick a theme from the gallery. Each card previews the menu in light or dark mode. Themes marked
+	<b>Light &amp; dark</b> follow the Windows app mode.</p>
+<table class="table table-sm">
+	<tr><td class="syntax-keyword w-25">Windows</td><td>Solid, follows Windows light and dark mode. The default.</td></tr>
+	<tr><td class="syntax-keyword">Liquid Glass</td><td>Translucent frosted glass with a bright edge and a soft sheen, light and dark.</td></tr>
+	<tr><td class="syntax-keyword">Dark, Light</td><td>Solid, regardless of the Windows mode.</td></tr>
+	<tr><td class="syntax-keyword">Acrylic</td><td>Frosted blur, mostly opaque.</td></tr>
+	<tr><td class="syntax-keyword">Classic glass</td><td>Nilesoft Shell's default. Very see-through on busy wallpapers.</td></tr>
+</table>
+<article class="message is-info">
+	<div class="message-body">Glass and acrylic effects need <b>Transparency effects</b> turned on in Windows Settings &gt; Personalisation &gt; Colours.</div>
+</article>
+
+<h5 id="editor">Theme editor</h5>
+<p>Choose <b>Customize</b> on any theme to open the editor. It has a field for every option in
+	<a href="/docs/configuration/themes">Themes</a>: dropdowns, sliders, color pickers, padding and gradient stops,
+	with a live preview. Any color can have a different value in dark mode.</p>
+<p>Built-in themes are never changed. Your version is saved as a new theme in <code>imports\themes\</code>, so updates
+	can still refresh the originals.</p>
+
+<h5 id="menu">Menu</h5>
+<p>Turn sections of the menu on or off: tidy up Windows items, File manage, Terminal, Develop, Go To and the taskbar
+	menu. You can also set the submenu delay and tooltips, turn ContextShell off in File Explorer, and restart Explorer.</p>
+
+<h5 id="updates">Updates</h5>
+<p>When you sign in, ContextShell asks GitHub for the latest release, at most about once a day. If there's a newer
+	version, a small notification offers <b>Update now</b>, <b>Later</b> or <b>Skip this version</b>.</p>
+<p>Updating downloads the setup for your PC's architecture and checks it against the release's
+	<code>SHA256SUMS.txt</code> before running it. Nothing about you or your PC is sent. Turn this off in
+	Settings &gt; <b>Updates</b>, or install with <code>AUTOUPDATE=0</code>.</p>
+
+<h5 id="files">Where settings are stored</h5>
+<p>Everything Settings changes is plain text in the install folder, so you can still edit it by hand:</p>
+<table class="table table-sm">
+	<tr><td class="syntax-keyword w-25">shell.nss</td><td>Main config. Imports the files below. Menu sections are switched off by commenting their import line.</td></tr>
+	<tr><td class="syntax-keyword">imports\theme.nss</td><td>Imports the active theme from <code>imports\themes\</code>.</td></tr>
+	<tr><td class="syntax-keyword">imports\themes\*.nss</td><td>Built-in and your own themes.</td></tr>
+</table>

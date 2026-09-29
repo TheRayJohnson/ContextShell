@@ -44,3 +44,4 @@ src/packages/
 src/app/*/bin/
 src/app/*/obj/
 src/setup/out/
+site/_site/

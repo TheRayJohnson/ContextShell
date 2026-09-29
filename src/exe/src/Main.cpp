@@ -715,14 +715,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPWSTR,
         auto btn_web = new UI::Button(L"\uE11F", { tl, tt, btn_h, btn_h }, ID_WEB, main_window, BS_OWNERDRAW, _hfont_icon,  L"Website Ctrl+W");
        
         tl += btn_h + offset_2;
-        auto btn_email = new UI::Button(L"\uE115", { tl, tt, btn_h, btn_h }, ID_EMAIL, main_window, BS_OWNERDRAW, _hfont_icon, L"Email Ctrl+E");
+        auto btn_email = new UI::Button(L"\uE115", { tl, tt, btn_h, btn_h }, ID_EMAIL, main_window, BS_OWNERDRAW, _hfont_icon, L"Report a problem Ctrl+E");
        
         tl += btn_h + offset_2;
         auto btn_bug = new UI::Button(L"\uE22B", { tl, tt, btn_h, btn_h }, ID_GITHUB, main_window, BS_OWNERDRAW, _hfont_icon, L"Github Ctrl+G");
 
 		//tl += (dpi(50) - btn_h) + btn_h + dpi(12);
 		tl += btn_h + offset_2;
-        auto btn_donate = new UI::Button(L"\uE1A8", { tl, tt, btn_h, btn_h }, ID_DONATE, main_window, BS_OWNERDRAW, _hfont_icon, L"Donate Ctrl+D");
+        auto btn_donate = new UI::Button(L"\uE1C4", { tl, tt, btn_h, btn_h }, ID_DONATE, main_window, BS_OWNERDRAW, _hfont_icon, L"Documentation Ctrl+D");
 
 
         main_window->SetColor({ btn_reg, btn_unreg,btn_restart,btn_donate,btn_web,btn_email,btn_bug }, 
@@ -1052,13 +1052,13 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 					Open(hWnd, APP_WEBSITE);
                     break;
                 case ID_DONATE:
-					Open(hWnd, L"https://nilesoft.org/donate");
+					Open(hWnd, APP_DOCS);
                     break;
                 case ID_EMAIL:
-					Open(hWnd, L"mailto:support@nilesoft.org");
+					Open(hWnd, APP_EMAIL); // GitHub issues
                     break;
                 case ID_GITHUB:
-					Open(hWnd, L"https://github.com/moudey/shell");
+					Open(hWnd, APP_REPO);
                     break;
 				case ID_RESTART:
 					Windows::Explorer::Restart();

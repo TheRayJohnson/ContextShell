@@ -37,7 +37,9 @@ namespace Nilesoft
 //#define APP_VERSION_FULL		L"$MAJOR$.$MINOR$ build $BUILD$"
 
 constexpr auto APP_EMAIL		= L"https://github.com/TheRayJohnson/ContextShell/issues";
-constexpr auto APP_WEBSITE		= L"https://github.com/TheRayJohnson/ContextShell";
+constexpr auto APP_WEBSITE		= L"https://therayjohnson.github.io/ContextShell/";
+constexpr auto APP_DOCS			= L"https://therayjohnson.github.io/ContextShell/docs/";
+constexpr auto APP_REPO			= L"https://github.com/TheRayJohnson/ContextShell";
 constexpr auto APP_WEBSITELINK	= L"https://github.com/TheRayJohnson/ContextShell";
 
 #ifdef _WINDLL

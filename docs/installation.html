@@ -1,218 +1,114 @@
-﻿<h4>Installation</h4>
+<h4>Installation</h4>
 <br>
-<div class="notification is-warning mt-5" role="alert">
-	<i>Info:</i> Administrative permissions are required for installation.
-</div>
-<br>
-<p>Shell can be installed in the following ways:</p>
+<article class="message is-info">
+	<div class="message-body">Installing needs administrator permission, because ContextShell adds itself to File Explorer for every user.</div>
+</article>
+<article class="message is-warning">
+	<div class="message-body">Uninstall Nilesoft Shell or iMA Menu first. They hook the same Explorer menu, and only one can be active at a time.</div>
+</article>
+<p>ContextShell can be installed in the following ways:</p>
 <ul>
-	<li><a href="#installer">Installer</a></li>
+	<li><a href="#installer">Installer</a> (recommended)</li>
+	<li><a href="#silent">Silent and managed installs</a></li>
 	<li><a href="#portable">Portable</a></li>
-	<li><a href="#winget">Windows Package Manager</a></li>
-	<li><a href="#scoop">Scoop</a></li>
-	<li><a href="#chocolatey">Chocolatey</a></li>
-</ul><br>
+</ul>
 <p>Please also note the following reference sections:</p>
 <ul>
 	<li><a href="#cli">Command-Line Help</a></li>
-	<li><a href="#keys">Keys to enable/disable Shell functionalities</a></li>
+	<li><a href="#keys">Keys to reload or disable ContextShell</a></li>
 </ul>
 <br>
+
 <div id="installer">
-	<h5>Installer version</h5>
+	<h5>Installer</h5>
 	<div id="installer-install">
-		<h5>Install</h5>
-		<p><a href="/download">Download</a> the installation file (Installer/Portable),
-			run <code>setup.exe</code>, follow the installation steps, and agree to restart Windows File Explorer.</p>
-		<p>The program will be installed to <code>C:\Program Files\Nilesoft Shell\</code>, unless you have chosen
-			a different installation path during the installation steps.</p>
+		<h6>Install</h6>
+		<p>Download <code>ContextShell-&lt;version&gt;-x64-setup.exe</code> from the
+			<a href="https://github.com/TheRayJohnson/ContextShell/releases/latest">latest release</a>.
+			Use the <code>arm64</code> file on Windows on ARM, or <code>x86</code> on 32-bit Windows 10.</p>
+		<p>Run it and follow the steps. You can choose the install folder, Start menu and desktop shortcuts, and
+			whether ContextShell checks for updates when you sign in. Setup adds ContextShell to File Explorer, which
+			restarts Explorer for a moment.</p>
+		<p>ContextShell is installed to <code>C:\Program Files\ContextShell\</code> unless you choose another folder.</p>
 	</div>
-	<hr>
+	<div id="installer-update">
+		<h6>Update</h6>
+		<p>ContextShell Settings shows when a new version is available (Settings &gt; <b>Updates</b>). You can also run
+			a newer setup over the installed version. Your themes and menu settings are kept.</p>
+	</div>
 	<div id="installer-uninstall">
-		<h5>Uninstall</h5>
-		<p>Inside the Shell program folder (<code>C:\Program Files\Nilesoft Shell\</code> by default), run the <code>unst000.exe</code>
-			or <code>unstall.exe</code> file, then follow the steps, and then agree to restart Windows File Explorer.
-		</p>
+		<h6>Uninstall</h6>
+		<p>Open Windows Settings &gt; <b>Apps</b>, find <b>ContextShell</b> and choose <b>Uninstall</b>. Or run the setup
+			again and choose <b>Uninstall</b>.</p>
 	</div>
 </div>
-<br/>
+<hr>
+
+<div id="silent">
+	<h5>Silent and managed installs</h5>
+	<p>The setup EXE takes these options:</p>
+	<pre><code class="lang-shell">ContextShell-v1.9.21-x64-setup.exe /quiet</code></pre>
+	<table class="table table-sm">
+		<tr><td class="syntax-keyword w-25">/quiet</td><td>No UI. The exit code is the Windows Installer result: 0 or 3010 means success.</td></tr>
+		<tr><td class="syntax-keyword">/passive</td><td>Show progress only, no questions.</td></tr>
+		<tr><td class="syntax-keyword">/uninstall</td><td>Remove ContextShell.</td></tr>
+		<tr><td class="syntax-keyword">/repair</td><td>Repair the current install.</td></tr>
+		<tr><td class="syntax-keyword">/log &lt;file&gt;</td><td>Write a verbose Windows Installer log.</td></tr>
+		<tr><td class="syntax-keyword">/extract &lt;dir&gt;</td><td>Save the embedded MSI, for msiexec, Intune or Group Policy.</td></tr>
+		<tr><td class="syntax-keyword">INSTALLFOLDER=&lt;path&gt;</td><td>Install location.</td></tr>
+		<tr><td class="syntax-keyword">ADDSTARTMENU=0|1</td><td>Start menu shortcut (default 1).</td></tr>
+		<tr><td class="syntax-keyword">ADDDESKTOP=0|1</td><td>Desktop shortcut (default 0).</td></tr>
+		<tr><td class="syntax-keyword">AUTOUPDATE=0|1</td><td>Check GitHub for updates at sign-in (default 1).</td></tr>
+	</table>
+	<p>Each release also has a plain MSI that takes the same properties:</p>
+	<pre><code class="lang-shell">msiexec /i ContextShell-v1.9.21-x64.msi /qn AUTOUPDATE=0</code></pre>
+</div>
+<hr>
+
 <div id="portable">
-	<h5>Portable version</h5>
+	<h5>Portable</h5>
 	<div id="portable-install">
-		<h5>Install</h5>
-		<p><a href="/download">Download</a> the
-			installation file (Installer/Portable),
-			run <code>setup.exe</code>,
-			click Next, chose the folder you want the program to be extracted
-			to, <strong>Check the option Portable Mode</strong>, and click
-			Extract.</p>
-		<p>Open an <strong>elevated command prompt</strong> (or use <a href="https://github.com/gerardog/gsudo">gsudo</a>), change to the directory you have extracted the program to, and run</p>
-		<div class="console">
-			<div class="console-title">Administrator: Command Prompt</div>
-			<div class="console-body">shell -register -restart</div>
-		</div>
+		<h6>Install</h6>
+		<p>Download <code>ContextShell-&lt;version&gt;-x64-portable.zip</code> and extract it to a folder you'll keep.</p>
+		<p>Open an elevated command prompt, change to that folder, and run</p>
+		<div class="has-text-grey is-size-7">Administrator: Command Prompt</div>
+		<pre><code class="lang-shell">shell -register -treat -restart</code></pre>
 		<p>For further details, see the chapter <a href="#cli">Command-Line Help</a> below.</p>
 	</div>
-	<hr>
 	<div id="portable-uninstall">
-		<h5>Uninstall</h5>
-		<p>Open an <strong>elevated command prompt</strong> (or use <a href="https://github.com/gerardog/gsudo">gsudo</a>), change to the directory you have extracted the program to, and run</p>
-		<div class="console">
-			<div class="console-title">Administrator: Command Prompt</div>
-			<div class="console-body">shell -unregister -restart</div>
-		</div>
-		<br>
-		<div class="notification is-info mt-5">
-			<i>Tip:</i> Close all instances of Windows File Explorer before uninstalling to avoid needing a reboot after
-			it (Shell) has been uninstalled.
-		</div>
-		<br>
-		<p>For further details see the chapter <a href="#cli">Command-Line Help</a> below.</p>
+		<h6>Uninstall</h6>
+		<p>Open an elevated command prompt, change to the folder, and run</p>
+		<div class="has-text-grey is-size-7">Administrator: Command Prompt</div>
+		<pre><code class="lang-shell">shell -unregister -restart</code></pre>
+		<article class="message is-info">
+			<div class="message-body">Close all File Explorer windows before uninstalling, so Windows doesn't need a restart to release the files.</div>
+		</article>
 	</div>
 </div>
-<br/>
-<div id="winget">
-	<h5>Windows Package Manager</h5>
-	<p>Windows Package Manager is available from Windows 10 version 1809.</p>
-	<div id="winget-install">
-		<h5>Install</h5>
-		<p>Open a command prompt, and run</p>
-		<div class="console">
-			<div class="console-title">COMMAND PROMPT</div>
-			<div class="console-body">winget install Nilesoft.Shell</div>
-		</div>
-		<p>The program will be installed to <code>C:\Program Files\Nilesoft Shell\</code>.</p>
-	</div>
-	<hr>
-	<div id="winget-uninstall">
-		<h5>Uninstall</h5>
-		<p>Open a command prompt, and run</p>
-		<div class="console">
-			<div class="console-title">COMMAND PROMPT</div>
-			<div class="console-body">winget uninstall Nilesoft.Shell</div>
-		</div>
-	</div>
-</div>
-<br/>
-<div id="scoop">
-	<h5>Scoop</h5>
-	<p>Scoop can be installed following the instructions at <a href="https://scoop.sh/">scoop.sh</a>.</p>
-	<div id="scoop-install">
-		<h5>Install</h5>
-		<p>Open a command prompt, and run</p>
-		<div class="console">
-			<div class="console-title">COMMAND PROMPT</div>
-			<div class="console-body">scoop install nilesoft-shell</div>
-		</div>
-		<p>The program will be installed to <code>%USERPROFILE%\scoop\apps\nilesoft-shell\current\</code>.</p>
-		<div class="notification is-info mt-5">
-			<i>Tip:</i> If you get the error <code>Couldn't find manifest for 'nilesoft-shell'</code>, please run first
-			<div class="console">
-				<div class="console-title">COMMAND PROMPT</div>
-				<div class="console-body">scoop bucket add extras</div>
-			</div>
-		</div>
-		<p>Open an <strong>elevated command prompt</strong> (or use <a href="https://github.com/gerardog/gsudo">gsudo</a>), and run</p>
-		<div class="console">
-			<div class="console-title">Administrator: Command Prompt</div>
-			<div class="console-body">shell -register -restart</div>
-		</div>
-		<p>For further details see the chapter <a href="#cli">Command-Line Help</a> below.</p>
-	</div>
-	<hr>
-	<div id="scoop-uninstall">
-		<h5>Uninstall</h5>
-		<p>Open an <strong>elevated command prompt</strong> (or use <a href="https://github.com/gerardog/gsudo">gsudo</a>), and run</p>
-		<div class="console">
-			<div class="console-title">Administrator: Command Prompt</div>
-			<div class="console-body">shell -unregister -restart</div>
-		</div>
-		<p>Then run</p>
-		<div class="console">
-			<div class="console-title">Administrator: Command Prompt</div>
-			<div class="console-body">scoop uninstall nilesoft-shell</div>
-		</div>
-	</div>
-</div>
-<br/>
-<div id="chocolatey">
-	<h5>Chocolatey</h5>
-	<p>Chocolatey can be installed following the instructions at <a href="https://chocolatey.org/install#individual">chocolatey.org</a>.</p>
-	<div id="chocolatey-install">
-		<h5>Install</h5>
-		<div class="notification is-info mt-5">
-			<i>Notice:</i> Until the package has been moderated, you need to add the specific version string to the
-			installer, adding e.g.<br/>
-			<div class="console">
-				<div class="console-title">COMMAND PROMPT</div>
-				<div class="console-body">
-					choco install nilesoft.shell --version=1.8.1
-				</div>
-			</div>
-			Please find the latest published version at <a href="https://community.chocolatey.org/packages/nilesoft.shell#versionhistory">
-			Chocolatey's Version History</a> and use the latest version number (replacing <code>1.8.1</code>).
-		</div>
-		<br>
-		<p>Open an <strong>elevated command prompt</strong> (or use <a href="https://github.com/gerardog/gsudo">gsudo</a>), and run</p>
-		<div class="console">
-			<div class="console-title">COMMAND PROMPT</div>
-			<div class="console-body">
-				choco install nilesoft.shell
-			</div>
-		</div>
-		<p>The program will be installed to <code>C:\Program Files\Nilesoft Shell\</code>.</p>
-	</div>
-	<hr>
-	<div id="chocolatey-uninstall">
-		<h5>Uninstall</h5>
-		<p>Open an <strong>elevated command prompt</strong> (or use <a href="https://github.com/gerardog/gsudo">gsudo</a>), and run</p>
-		<div class="console">
-			<div class="console-title">COMMAND PROMPT</div>
-			<div class="console-body">choco uninstall nilesoft.shell</div>
-		</div>
-	</div>
-</div>
-
-<br/>
+<hr>
 
 <div id="cli">
-	<h5 id="cli-help">Command-Line Help</h5><br>
-	<code>shell -[options]</code>
-	<br><br>
-	<h5 id="cli-options">Options</h5>
+	<h5 id="cli-help">Command-Line Help</h5>
+	<p><code>shell.exe</code> in the install folder registers and unregisters ContextShell with File Explorer.</p>
+	<pre><code class="lang-shell">shell -[options]</code></pre>
+	<h6 id="cli-options">Options</h6>
 	<table class="table table-sm">
-		<tr>
-			<td class="syntax-keyword w-25">-register (-r)</td>
-			<td>Registering.</td>
-		</tr>
-		<tr>
-			<td class="syntax-keyword">-unregister (-u)</td>
-			<td>Unregistering.</td>
-		</tr>
-		<tr>
-			<td class="syntax-keyword">-restart (-re)</td>
-			<td>Restart Windows Explorer.</td>
-		</tr>
-		<tr>
-			<td class="syntax-keyword">-treat</td>
-			<td>Disable Windows 11 context menu.</td>
-		</tr>
-		<tr>
-			<td class="syntax-keyword">-silent (-s)</td>
-			<td>Prevents displaying messages.</td>
-		</tr>
-		<tr>
-			<td class="syntax-keyword">-?</td>
-			<td>Display this help message.</td>
-		</tr>
+		<tr><td class="syntax-keyword w-25">-register (-r)</td><td>Add ContextShell to File Explorer.</td></tr>
+		<tr><td class="syntax-keyword">-unregister (-u)</td><td>Remove ContextShell from File Explorer.</td></tr>
+		<tr><td class="syntax-keyword">-restart</td><td>Restart File Explorer.</td></tr>
+		<tr><td class="syntax-keyword">-treat</td><td>Replace the Windows 11 compact menu with the full menu.</td></tr>
+		<tr><td class="syntax-keyword">-silent (-s)</td><td>Don't show messages.</td></tr>
+		<tr><td class="syntax-keyword">-?</td><td>Show this help.</td></tr>
 	</table>
 </div>
 <hr>
+
 <div id="keys">
-	<h5>Use the following keys to enable/disable</h5>
-	<p>These keys are used when you press <kbd>right-click</kbd> or press <kbd>Shift</kbd>+<kbd>F10</kbd> keys</p>
-	<kbd>CTRL</kbd> To enable and reload the configuration file <code>shell.nss</code><br/>
-	<kbd>WIN</kbd> To make priority to the modern context menu for Windows 11<br>
-	<kbd>CTRL</kbd>+<kbd>WIN</kbd> To disable Shell and Enable Classic Context Menu<br>
-	<kbd>RIGHT-CLICK</kbd>+<kbd>LEFT-CLICK</kbd> To reload the configuration file <code>shell.nss</code><br/>
+	<h5>Keys to reload or disable ContextShell</h5>
+	<p>Hold these keys while you <kbd>right-click</kbd> (or press <kbd>Shift</kbd>+<kbd>F10</kbd>):</p>
+	<p>
+		<kbd>Ctrl</kbd> Reload the configuration now. ContextShell also reloads by itself when a <code>.nss</code> file changes.<br>
+		<kbd>Win</kbd> Show the Windows 11 compact menu this time.<br>
+		<kbd>Ctrl</kbd>+<kbd>Win</kbd> Turn ContextShell off and use the classic Windows menu.<br>
+	</p>
 </div>

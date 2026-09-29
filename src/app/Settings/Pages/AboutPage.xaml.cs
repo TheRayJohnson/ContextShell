@@ -24,7 +24,7 @@ namespace ContextShell.Settings.Pages
 		private void GitHub_Click(object sender, RoutedEventArgs e) => AppInfo.OpenUrl(AppInfo.RepositoryUrl);
 		private void Issues_Click(object sender, RoutedEventArgs e) => AppInfo.OpenUrl(AppInfo.RepositoryUrl + "/issues");
 		private void Releases_Click(object sender, RoutedEventArgs e) => AppInfo.OpenUrl(AppInfo.RepositoryUrl + "/releases");
-		private void Docs_Click(object sender, RoutedEventArgs e) => AppInfo.OpenUrl("https://nilesoft.org/docs");
+		private void Docs_Click(object sender, RoutedEventArgs e) => AppInfo.OpenUrl(AppInfo.DocsUrl);
 		private void License_Click(object sender, RoutedEventArgs e) => AppInfo.OpenUrl(AppInfo.RepositoryUrl + "/blob/main/LICENSE");
 
 		private void Folder_Click(object sender, RoutedEventArgs e)

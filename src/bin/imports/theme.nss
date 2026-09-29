@@ -6,5 +6,5 @@
 //   themes/glass.nss    Nilesoft default, very see-through on some wallpapers
 // Save the file and right-click again; no restart needed.
 // To make your own, copy one of the files in themes\ and edit it.
-// All options: https://github.com/TheRayJohnson/ContextShell/blob/main/docs/configuration/themes.html
+// All options: https://therayjohnson.github.io/ContextShell/docs/configuration/themes/
 import 'themes/auto.nss'
