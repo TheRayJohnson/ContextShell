@@ -9,14 +9,17 @@ namespace Nilesoft
 	{
 		const Windows::Version *os = &Windows::Version::Instance();
 
-		bool Initializer::init(HINSTANCE hInstance)
+		bool Initializer::init(HINSTANCE hInstance, bool host)
 		{
 			HInstance = hInstance;
 			instance = this;
 
 			try
 			{
-				com_initializer.initialize();
+				// Only in Explorer and shell.exe. In other processes this would turn whatever thread loaded
+				// the DLL into a single-threaded apartment and never undo it on that thread.
+				if(host)
+					com_initializer.initialize();
 
 				application.Name = APP_NAME;
 				application.FileName = APP_FILENAME_TITLE;
@@ -39,14 +42,7 @@ namespace Nilesoft
 					application.Manager = (path + L"exe").move();
 				}
 
-				auto hwnd_foreground = ::GetForegroundWindow();
-				if(os->IsWindowsVersionOrGreater(10, 0, 14393))
-					dpi = DLL::User32<uint32_t>("GetDpiForWindow", hwnd_foreground);
-				else
-					dpi = DC(hwnd_foreground).GetDeviceCapsY();
-
-				//dpi = ::GetDpiForWindow(::GetForegroundWindow());//win10 version 1607 //10.0.14393
-				is_elevated = Security::Elevation::IsElevated();
+				// The DPI and elevation state are read by init_display(), from prepare_menu_runtime() in Main.cpp.
 				//WIC::init();
 			}
 			catch(...)
@@ -57,6 +53,27 @@ namespace Nilesoft
 				return false;
 			}
 			return true;
+		}
+
+		void Initializer::init_display()
+		{
+			try
+			{
+				auto hwnd_foreground = ::GetForegroundWindow();
+				if(os->IsWindowsVersionOrGreater(10, 0, 14393))
+					dpi = DLL::User32<uint32_t>("GetDpiForWindow", hwnd_foreground);
+				else
+					dpi = DC(hwnd_foreground).GetDeviceCapsY();
+
+				//dpi = ::GetDpiForWindow(::GetForegroundWindow());//win10 version 1607 //10.0.14393
+				is_elevated = Security::Elevation::IsElevated();
+			}
+			catch(...)
+			{
+#ifdef _DEBUG
+				Logger::Exception(__func__);
+#endif
+			}
 		}
 
 		Initializer::~Initializer()

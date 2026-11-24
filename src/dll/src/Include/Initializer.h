@@ -619,7 +619,13 @@ namespace Nilesoft
 			~Initializer();
 
 			bool query(int ch = 0);
-			bool init(HINSTANCE hInstance);
+			// Called from DllMain. host is true in Explorer and shell.exe, where the DLL also initializes COM
+			// up front. In other processes it only records paths, so loading the DLL doesn't change the
+			// loading thread's COM apartment.
+			bool init(HINSTANCE hInstance, bool host);
+			// Reads the DPI and elevation state. Called once per process by prepare_menu_runtime() in Main.cpp:
+			// from DllMain in Explorer and shell.exe, before the first menu in other processes.
+			void init_display();
 			bool init();
 			// Clean up resources allocated during initialization.
 			bool uninit();

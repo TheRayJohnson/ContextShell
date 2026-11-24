@@ -209,6 +209,42 @@ struct
 
 } _loader;
 
+// Reads the display state and registers the menu window class, once per process. DllMain runs it in
+// Explorer and shell.exe. In other processes it runs before the first menu is shown, on the thread that
+// shows the menu, instead of on whichever thread happened to load the DLL.
+static void prepare_menu_runtime()
+{
+	static INIT_ONCE once = INIT_ONCE_STATIC_INIT;
+	::InitOnceExecuteOnce(&once, [](PINIT_ONCE, PVOID, PVOID *) -> BOOL
+	{
+		_initializer.init_display();
+		ContextMenu::RegisterLayer();
+		return TRUE;
+	}, nullptr, nullptr);
+}
+
+// The IAT hooks point into this DLL. Outside Explorer, DllCanUnloadNow returns S_OK, so COM may unload
+// the DLL, and DLL_PROCESS_DETACH leaves the hooks in place while ContextShell is registered. The next
+// popup menu would then call into freed memory. Once a hook is installed, keep the DLL loaded for the
+// life of the process.
+static void pin_if_hooked()
+{
+	bool hooked = iathook_NtUserTrackPopupMenuEx.installed();
+	for(const auto &h : iathook_TrackPopupMenu)
+	{
+		if(hooked)
+			break;
+		hooked = h.installed();
+	}
+
+	if(hooked)
+	{
+		HMODULE self{};
+		::GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_PIN,
+							 reinterpret_cast<LPCWSTR>(_hInstance), &self);
+	}
+}
+
 struct taskbar_t
 {
 	inline static IComPtr<IUIAutomation> _IUIAutomation;
@@ -560,6 +596,9 @@ BOOL WINAPI NtUserTrackPopupMenu(HMENU hMenu, uint32_t uFlags, int x, int y, HWN
 				// Reload when shell.nss or a file it imports changed since the config was loaded.
 				if(_initializer.Status.Loaded && _initializer.config_has_changed())
 					_initializer.uninit();
+
+				// Outside Explorer, the display state and the menu window class are set up on first use.
+				prepare_menu_runtime();
 
 				// is injected from explorer
 				if(!_initializer.Status.Loaded)
@@ -978,12 +1017,21 @@ BOOL APIENTRY DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID)
 			//if(!loader)
 			//	_log.info(L"Load '%s'", Path::Module(nullptr).c_str());
 
-			if(_initializer.init(_hInstance))
+			// Explorer and shell.exe get the full setup here, as before. Other processes (apps with file
+			// dialogs, services that ask for icon overlays, ...) only get the TrackPopupMenu hook. The rest
+			// waits for the first menu (prepare_menu_runtime), so loading the DLL doesn't change the loading
+			// thread's COM apartment, make it a GUI thread, or change process-wide COM settings.
+			const bool host = _loader.explorer || _loader.path.ends_with(L"\\shell.exe");
+
+			if(_initializer.init(_hInstance, host))
 			{
-				// DisableComExceptionHandling
-				IComPtr<IGlobalOptions> globalOptions;
-				if(globalOptions.CreateInstance(CLSID_GlobalOptions, CLSCTX_SERVER))
-					globalOptions->Set(COMGLB_EXCEPTION_HANDLING, COMGLB_EXCEPTION_DONOT_HANDLE_ANY);
+				if(host)
+				{
+					// DisableComExceptionHandling. This setting is process-wide, so only set it in our own hosts.
+					IComPtr<IGlobalOptions> globalOptions;
+					if(globalOptions.CreateInstance(CLSID_GlobalOptions, CLSCTX_SERVER))
+						globalOptions->Set(COMGLB_EXCEPTION_HANDLING, COMGLB_EXCEPTION_DONOT_HANDLE_ANY);
+				}
 
 				_initializer.process.hModule = _loader.handle;
 				_initializer.process.path = Path::Module(_loader.handle).move();
@@ -993,7 +1041,8 @@ BOOL APIENTRY DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID)
 
 				//_log.info(L"%s", _initializer.process.name.c_str());
 
-				ContextMenu::RegisterLayer();
+				if(host)
+					prepare_menu_runtime();
 
 				iathook_NtUserTrackPopupMenuEx
 					.init(L"user32.dll", "win32u.dll", "NtUserTrackPopupMenuEx", TrackPopupMenuExProc)
@@ -1084,6 +1133,9 @@ BOOL APIENTRY DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID)
 				{
 					hook();
 				}
+
+				if(!_loader.explorer)
+					pin_if_hooked();
 			}
 			//IsRegistered
 			/*
@@ -1162,6 +1214,12 @@ STDAPI DllGetClassObject(_In_ REFCLSID rclsid, [[maybe_unused]] _In_ REFIID riid
 
 		if(!iid.equals({ IID_ContextMenu, IID_IconOverlay }))
 			return hr;
+
+		// The overlay registration exists to get the DLL into Explorer early. Other processes that ask
+		// for overlays (SHGetFileInfo with SHGFI_ADDOVERLAYS, list views, services) never show our menus,
+		// so don't load the config there.
+		if(rclsid == IID_IconOverlay && !_loader.explorer)
+			return CLASS_E_CLASSNOTAVAILABLE;
 
 		if(Initializer::Status.Disabled)
 			return hr;
