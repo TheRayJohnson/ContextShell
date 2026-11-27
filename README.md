@@ -19,6 +19,8 @@ config language, and adds a settings app, a theme editor and a proper installer.
 * **ContextShell Settings**: pick a theme, edit every theme option with a live preview, and turn menu sections on or off.
   No more editing config files in Notepad as administrator.
 * **Themes that follow Windows light and dark mode**, including Liquid Glass: a translucent, frosted menu with a bright edge.
+* **Copy contents**: copy the text of one or more files straight from the right-click menu (File manage > Copy
+  contents). Several files are copied with a header line naming each one. Binary files are skipped.
 * Add custom items: sub-menus, menu items, separators, multi-column menus.
 * Modify, move, or remove existing items added by Windows or by third-party software.
 * Works on files, folders, drives, desktop, the navigation pane (Quick Access, This PC), and the taskbar.
@@ -113,9 +115,10 @@ Nilesoft Shell, so existing Nilesoft configs work unchanged.
 
 ## Updates
 
-When you sign in, `ContextShell.exe --check-updates --background` asks the GitHub API for the latest release, at most
-about once a day. If there's a newer version, a small notification offers **Update now**, **Later** or
-**Skip this version**. Updating downloads the setup EXE for your architecture, checks it against the release's
+Each time you sign in, `ContextShell.exe --check-updates --background` asks the GitHub API for the latest release.
+If there's a newer version, a small notification offers **Update now**, **Later** or **Skip this version**.
+Opening Settings also checks if the last check was more than 4 hours ago, and marks the Updates page when an update
+is available. Updating downloads the setup EXE for your architecture, checks it against the release's
 `SHA256SUMS.txt`, and runs it. Your themes and menu settings are kept. Turn this off in Settings > Updates, or install
 with `AUTOUPDATE=0`.
 

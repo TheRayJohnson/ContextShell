@@ -87,9 +87,9 @@
 				<CheckBox x:Name="DesktopBox" Content="Create a desktop shortcut" />
 
 				<TextBlock Margin="0,16,0,4" Style="{StaticResource BodyStrongText}" Text="Updates" />
-				<CheckBox x:Name="AutoUpdateBox" Content="Check for updates when I sign in" />
+				<CheckBox x:Name="AutoUpdateBox" Content="Check for updates automatically" />
 				<TextBlock Margin="30,0,0,0" Style="{StaticResource CaptionText}"
-				           Text="Asks GitHub once a day whether a newer release exists. Nothing about you or your PC is sent." />
+				           Text="Asks GitHub whether a newer release exists each time you sign in. Nothing about you or your PC is sent." />
 			</StackPanel>
 
 			<!-- Progress -->

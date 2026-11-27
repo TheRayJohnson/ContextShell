@@ -50,6 +50,34 @@ namespace ContextShell.Settings
 
 		public void ShowUpdateAvailable(bool available) => UpdateDot.Visibility = available ? Visibility.Visible : Visibility.Collapsed;
 
+		/// <summary>
+		/// Checks GitHub when Settings opens, if automatic checks are on and the last check was a while
+		/// ago. Covers people who rarely sign out. Marks the Updates page when a newer version exists;
+		/// stays silent otherwise, including when offline.
+		/// </summary>
+		public async void CheckForUpdatesQuietly()
+		{
+			if(!Updates.AutoCheckEnabled || !UpdateFlow.SettingsCheckDue)
+				return;
+			try
+			{
+				var release = await UpdateFlow.CheckAsync();
+				if(!IsLoaded || !UpdateFlow.ShouldOffer(release))
+					return;
+
+				UpdatesPage.Pending = release;
+				ShowUpdateAvailable(true);
+				// Show the update right away if the Updates page is open and not busy.
+				if(PageHost.Content is UpdatesPage page && !page.IsBusy)
+					Navigate("updates");
+				ShowToast($"ContextShell {release.Version.ToString(3)} is available. Open Updates to install it.");
+			}
+			catch
+			{
+				// Offline or GitHub unavailable: the next sign-in or the Updates page can try again.
+			}
+		}
+
 		private void Nav_Checked(object sender, RoutedEventArgs e)
 		{
 			if(!(sender is RadioButton rb) || PageHost == null)

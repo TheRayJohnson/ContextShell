@@ -17,7 +17,14 @@ namespace ContextShell.UI
 			SizeToContent = SizeToContent.Height;
 			ResizeMode = ResizeMode.NoResize;
 			WindowStartupLocation = owner != null ? WindowStartupLocation.CenterOwner : WindowStartupLocation.CenterScreen;
-			ShowInTaskbar = false;
+			// Without an owner (a message from a menu item, for example) the dialog is the app's only window:
+			// give it a taskbar button and bring it to the front so it can't get lost behind other windows.
+			ShowInTaskbar = owner == null;
+			if(owner == null)
+			{
+				Topmost = true;
+				Loaded += (s, e) => { Activate(); Topmost = false; };
+			}
 			UseLayoutRounding = true;
 			FontFamily = (FontFamily)Application.Current.FindResource("UIFont");
 			FontSize = 14;

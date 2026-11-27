@@ -15,6 +15,8 @@ windows_notepad="Windows notepad"
 // file-manage.nss
 file_manage="File manage"
 copy_multiple_paths='Copy (@sel.count) items selected'
+copy_contents="Copy contents"
+copy_all_contents='Copy contents of (@sel.count) files'
 all="All"
 invert="Invert"
 none="None"

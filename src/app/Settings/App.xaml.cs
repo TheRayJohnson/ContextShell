@@ -14,6 +14,7 @@ namespace ContextShell.Settings
 	/// <summary>
 	/// ContextShell.exe. With no arguments it opens Settings. Other modes:
 	///   --check-updates --background   sign-in update check (Run key); silent unless an update is found
+	///   --copy-contents &lt;file&gt; ...    copy the files' text to the clipboard ("Copy contents" menu items)
 	///   --page updates|menu|about       open Settings on a page
 	///   --apply &lt;dir&gt; --target &lt;dir&gt;   elevated helper that writes staged config changes
 	///   --screenshots &lt;dir&gt; [--config &lt;dir&gt;]   render every page to PNG (docs and CI)
@@ -43,6 +44,13 @@ namespace ContextShell.Settings
 			}
 
 			ThemeManager.Initialize(this);
+
+			if(Has("--copy-contents"))
+			{
+				int start = Array.FindIndex(args, a => a.Equals("--copy-contents", StringComparison.OrdinalIgnoreCase)) + 1;
+				Shutdown(CopyContents.Run(args.Skip(start)));
+				return;
+			}
 
 			if(Has("--screenshots"))
 			{
@@ -74,13 +82,16 @@ namespace ContextShell.Settings
 			var window = new MainWindow(new ConfigStore(folder), Arg("--page") ?? (Has("--check-updates") ? "updates" : null));
 			window.Closed += (s, a) => Shutdown(0);
 			window.Show();
+			window.CheckForUpdatesQuietly();
 		}
 
 		private async void BackgroundCheck()
 		{
 			try
 			{
-				if(!Updates.AutoCheckEnabled || !UpdateFlow.CheckDue)
+				// Checks at every sign-in, so a new release shows up at the next sign-in, however soon
+				// after the last check it is.
+				if(!Updates.AutoCheckEnabled)
 				{
 					Shutdown(0);
 					return;
@@ -88,7 +99,7 @@ namespace ContextShell.Settings
 				// Give sign-in a moment to settle before using the network.
 				await System.Threading.Tasks.Task.Delay(TimeSpan.FromSeconds(30));
 				var release = await UpdateFlow.CheckAsync();
-				if(release == null || !Updates.IsNewer(release) || Updates.SkippedVersion == release.Version.ToString(3))
+				if(!UpdateFlow.ShouldOffer(release))
 				{
 					Shutdown(0);
 					return;

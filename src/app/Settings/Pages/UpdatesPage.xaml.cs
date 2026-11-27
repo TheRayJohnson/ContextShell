@@ -14,8 +14,11 @@ namespace ContextShell.Settings.Pages
 		private CancellationTokenSource _cts;
 		private bool _busy;
 
-		/// <summary>Set by the sign-in check so the page opens straight on the update.</summary>
+		/// <summary>Set by the check when Settings opens, so the page opens straight on the update.</summary>
 		public static ReleaseInfo Pending;
+
+		/// <summary>True while checking or downloading.</summary>
+		public bool IsBusy => _busy;
 
 		public UpdatesPage(MainWindow main)
 		{

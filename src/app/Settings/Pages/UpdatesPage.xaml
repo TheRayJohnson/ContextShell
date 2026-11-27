@@ -48,9 +48,9 @@
 					<TextBlock Style="{StaticResource IconText}" Text="&#xE823;" />
 					<CheckBox x:Name="AutoBox" Grid.Column="1" Style="{StaticResource ToggleSwitch}" Checked="Auto_Changed" Unchecked="Auto_Changed">
 						<StackPanel>
-							<TextBlock Text="Check for updates when I sign in" />
+							<TextBlock Text="Check for updates automatically" />
 							<TextBlock Style="{StaticResource CaptionText}"
-							           Text="At most once a day. ContextShell only asks GitHub for the latest release; nothing about you or your PC is sent." />
+							           Text="When you sign in, and when you open Settings if the last check was a few hours ago. ContextShell only asks GitHub for the latest release; nothing about you or your PC is sent." />
 						</StackPanel>
 					</CheckBox>
 				</Grid>

@@ -10,10 +10,15 @@ namespace ContextShell.Settings
 	/// <summary>Download a release's setup EXE, verify it, and hand over to it.</summary>
 	public static class UpdateFlow
 	{
-		/// <summary>How often the sign-in check actually contacts GitHub.</summary>
-		public static readonly TimeSpan CheckInterval = TimeSpan.FromHours(20);
+		// The sign-in check always asks GitHub: one small API request per sign-in. Opening Settings also
+		// checks, for people who rarely sign out, but no more often than this.
+		public static readonly TimeSpan SettingsCheckInterval = TimeSpan.FromHours(4);
 
-		public static bool CheckDue => DateTime.UtcNow - Updates.LastCheck.ToUniversalTime() > CheckInterval;
+		public static bool SettingsCheckDue => DateTime.UtcNow - Updates.LastCheck.ToUniversalTime() > SettingsCheckInterval;
+
+		/// <summary>True when the release is newer than this version and the user hasn't skipped it.</summary>
+		public static bool ShouldOffer(ReleaseInfo release) =>
+			release != null && Updates.IsNewer(release) && Updates.SkippedVersion != release.Version.ToString(3);
 
 		public static async Task<ReleaseInfo> CheckAsync(CancellationToken ct = default)
 		{

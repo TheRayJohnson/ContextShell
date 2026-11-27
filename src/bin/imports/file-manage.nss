@@ -13,6 +13,13 @@
 		item(mode="single" type='file' where=sel.file.ext.len>0 title=sel.file.ext cmd=command.copy(sel.file.ext))
 	}
 
+	// Copy the text of the selected files. ContextShell.exe reads them in its own process, skips
+	// binary files and limits the total to 10 MB, so Explorer never waits on a large file.
+	item(mode="single" type='file' title=loc.copy_contents image=icon.copy
+		cmd='"@app.dir\ContextShell.exe"' args='--copy-contents "@sel.path"')
+	item(mode="multiple" type='file' where=sel.count>1 && sel.count<=200 title=loc.copy_all_contents image=icon.copy
+		cmd='"@app.dir\ContextShell.exe"' args='--copy-contents ' + sel(true, ' '))
+
 	item(mode="single" type="file" title=loc.change_extension image=\uE0B5 cmd=if(input(loc.change_extension, "Type extension"),
 		io.rename(sel.path, path.join(sel.dir, sel.file.title + "." + input.result))))
 
