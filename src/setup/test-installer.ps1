@@ -76,10 +76,24 @@ try {
 	Run 'msiexec.exe' "/i `"$($oldMsi.FullName)`" /qn /l*v `"$logs\old.log`"" -log "$logs\old.log" | Out-Null
 	Check ((Products).Count -eq 1) "$PreviousTag installed"
 
+	# Edit one config file the way a user would, so the upgrade must keep it.
+	$edited = Join-Path $defaultFolder 'imports\goto.nss'
+	$marker = '// edited by the installer test'
+	Add-Content -Path $edited -Value $marker
+	(Get-Item $edited).CreationTime = (Get-Date).AddHours(-1)
+	(Get-Item $edited).LastWriteTime = Get-Date
+
 	# 2. Upgrade with the new setup EXE.
 	Write-Host "== Upgrade to $version with setup.exe /quiet" -ForegroundColor Yellow
 	Run $setup "/quiet /log `"$logs\upgrade.log`"" -log "$logs\upgrade.log" | Out-Null
 	Assert-Installed $defaultFolder $version
+	# Config files the user hasn't edited get the new version; edited ones are kept.
+	$bin = Join-Path $PSScriptRoot '..\bin'
+	foreach($f in 'imports\file-manage.nss', 'imports\lang\en.nss', 'imports\themes\liquid-glass.nss') {
+		$same = (Get-FileHash (Join-Path $defaultFolder $f)).Hash -eq (Get-FileHash (Join-Path $bin $f)).Hash
+		Check $same "upgrade updated unedited $f"
+	}
+	Check ((Get-Content $edited -Raw) -like "*$marker*") 'upgrade kept the edited imports\goto.nss'
 	Check ((Get-ItemProperty $runKey -ErrorAction SilentlyContinue).'ContextShell Updates' -like '*ContextShell.exe*--background*') 'sign-in update check registered'
 	Check ((LinkTarget $startMenuLnk) -like '*\ContextShell.exe') 'Start menu shortcut opens ContextShell Settings'
 	Check (-not (Test-Path $desktopLnk)) 'no desktop shortcut by default'

@@ -70,7 +70,10 @@
 		<StandardDirectory Id='$(var.PlatformProgramFilesFolder)'>
 			<Directory Id='INSTALLFOLDER' Name='$(var.FullName)'>
 				<Directory Id='IMPORTS' Name='imports'>
-					<Component Id='IMPORTS' Guid='{1907F318-D55A-48BA-AC47-5FDC3CF559A5}' NeverOverwrite='yes'>
+					<!-- No NeverOverwrite here or on LANG: upgrades must deliver new menu items and strings. Windows
+					     Installer still keeps any of these files the user (or ContextShell Settings) has edited,
+					     because it never replaces an unversioned file whose modified date is later than its creation date. -->
+					<Component Id='IMPORTS' Guid='{1907F318-D55A-48BA-AC47-5FDC3CF559A5}'>
 						<File Id='theme.nss' Source='$(var.bin)\imports\theme.nss' />
 						<File Id='goto.nss' KeyPath='yes' Source='$(var.bin)\imports\goto.nss' />
 						<File Id='modify.nss' Source='$(var.bin)\imports\modify.nss' />
@@ -91,7 +94,7 @@
 					</Component>
 				</Directory>
 				<Directory Id='LANG' Name='lang'>
-					<Component Id='LANG' Guid='{BBE59710-FA39-47B8-8A20-866171A0D262}' NeverOverwrite='yes'>
+					<Component Id='LANG' Guid='{BBE59710-FA39-47B8-8A20-866171A0D262}'>
 						<File Id='en.nss' Source='$(var.bin)\imports\lang\en.nss' />
 						<File Id='ar.nss' Source='$(var.bin)\imports\lang\ar.nss' />
 						<File Id='de_DE.nss' Source='$(var.bin)\imports\lang\de-DE.nss' />
